@@ -1,0 +1,47 @@
+<div class="flex flex-col h-full bg-white">
+  <!-- Header -->
+  <header class="h-14 border-b border-slate-200 flex items-center justify-between px-6">
+    <h1 class="text-xl font-bold">Today</h1>
+    <div class="flex items-center gap-4 text-slate-500">
+      <button class="material-icons text-xl">sort</button>
+      <button class="material-icons text-xl">more_horiz</button>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <div class="flex-1 overflow-y-auto p-6">
+    <!-- Add Task Quick Input -->
+    <div class="mb-6">
+      <div class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 focus-within:border-blue-400 transition-colors">
+        <span class="material-icons text-blue-500">add</span>
+        <input type="text" placeholder="Add task to 'Today'" class="flex-1 outline-none text-sm">
+      </div>
+    </div>
+
+    <!-- Task Items -->
+    <div class="space-y-2">
+      @for (task of tasks(); track task.id) {
+        <div class="group flex items-center gap-4 p-3 rounded-lg hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-0">
+          <button (click)="toggleTask(task.id)" class="material-icons text-xl" [class.text-blue-500]="task.completed" [class.text-slate-300]="!task.completed">
+            {{ task.completed ? 'check_circle' : 'radio_button_unchecked' }}
+          </button>
+          <div class="flex-1">
+            <h3 class="text-sm font-medium" [class.line-through]="task.completed" [class.text-slate-400]="task.completed">{{ task.title }}</h3>
+            @if (task.description) {
+              <p class="text-xs text-slate-500 truncate">{{ task.description }}</p>
+            }
+          </div>
+          <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button class="material-icons text-lg text-slate-400">edit</button>
+            <button class="material-icons text-lg text-slate-400">delete</button>
+          </div>
+        </div>
+      } @empty {
+        <div class="flex flex-col items-center justify-center py-20 text-slate-400">
+          <span class="material-icons text-6xl mb-4">task_alt</span>
+          <p>Relax! You have no tasks for today.</p>
+        </div>
+      }
+    </div>
+  </div>
+</div>
