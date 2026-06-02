@@ -1,14 +1,21 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { SidebarComponent } from '../../../features/sidebar/sidebar.component';
-import { TaskListComponent } from '../../../features/task-list/task-list.component';
-import { TaskDetailComponent } from '../../../features/tasks/task-detail/task-detail.component';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-app-layout',
+  selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, SidebarComponent, TaskListComponent, TaskDetailComponent],
-  templateUrl: './app-layout.component.html',
-  styleUrl: './app-layout.component.css'
+  imports: [RouterOutlet],
+  template: `
+    <div class="app-container">
+      <router-outlet></router-outlet>
+    </div>
+  `,
+  styles: [`
+    .app-container {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+    }
+  `]
 })
 export class AppLayoutComponent {}

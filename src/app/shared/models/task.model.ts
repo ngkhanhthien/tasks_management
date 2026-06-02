@@ -1,19 +1,25 @@
-export interface Task {
-    id: string;
-    title: string;
-    description?: string;
-    completed: boolean;
-    dueDate?: Date;
-    priority: 'low' | 'medium' | 'high';
-    listId: string;
-    tags?: string[];
-    createdAt: Date;
-    updatedAt: Date;
-}
+import { TaskPriority } from './task-priority.enum';
 
-export interface TaskList {
+export interface Task {
+
     id: string;
-    name: string;
-    color?: string;
-    icon?: string;
+
+    title: string;
+
+    description?: string;
+
+    completed: boolean;
+
+    dueDate?: Date;
+
+    projectId?: string;
+
+    tagIds: string[];
+
+    priority: TaskPriority;
+
+    createdAt: Date;
+
+    updatedAt: Date;
+
 }
