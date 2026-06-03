@@ -1,15 +1,15 @@
 .sidebar-container {
   display: flex;
   height: 100%;
-  background: #fff;
-  border-right: 1px solid #eee;
+  background: #f5ecec;
+  border-right: 1px solid #e8d5d5;
 }
 
 .nav-bar {
   width: 50px;
   height: 100%;
-  background: #fdf2f2;
-  border-right: 1px solid #eee;
+  background: #eddede;
+  border-right: 1px solid #e0cccc;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -55,17 +55,17 @@
   border-radius: 8px;
   border: none;
   background: transparent;
-  color: #df9b9b;
+  color: #c98080;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .nav-item:hover {
-  background: rgba(223, 155, 155, 0.1);
-  color: #b56c6c;
+  background: rgba(180, 100, 100, 0.12);
+  color: #a05050;
 }
 
 .nav-item.active {
-  color: #b56c6c;
-  background: rgba(223, 155, 155, 0.2);
+  color: #a05050;
+  background: rgba(180, 100, 100, 0.18);
 }
