@@ -5,89 +5,9 @@ import { CommonModule } from '@angular/common';
   selector: 'app-task-list',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <div class="h-full flex flex-col bg-white">
-      <!-- Header -->
-      <header class="flex items-center justify-between px-6 py-4">
-        <div class="flex items-center gap-4">
-          <button class="text-gray-500 hover:bg-gray-100 p-1.5 rounded-lg transition-colors">
-            <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-          </button>
-          <h1 class="text-2xl font-bold text-gray-800">Inbox</h1>
-        </div>
-        <div class="flex items-center gap-4">
-          <button class="text-gray-400 hover:text-gray-600 transition-colors">
-            <svg viewBox="0 0 24 24" class="w-5 h-5 rotate-180" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 11l5 5 5-5M7 7l5 5 5-5"/></svg>
-          </button>
-          <button class="text-gray-400 hover:text-gray-600 transition-colors">
-            <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/><circle cx="5" cy="12" r="1.2"/></svg>
-          </button>
-        </div>
-      </header>
-
-      <!-- Add Task -->
-      <div class="px-6 mb-4">
-        <div class="flex items-center gap-3 bg-gray-50/70 hover:bg-gray-100/50 border border-transparent focus-within:border-gray-200 px-4 py-2.5 rounded-xl cursor-text group transition-all">
-          <svg viewBox="0 0 24 24" class="w-5 h-5 text-gray-400 group-hover:text-blue-500" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          <span class="text-gray-400 text-sm font-medium">Add task</span>
-        </div>
-      </div>
-
-      <!-- Task Scrollable Content -->
-      <div class="flex-1 overflow-y-auto px-4 pb-10 custom-scrollbar">
-        <!-- Active Task Example -->
-        <div class="group flex items-center justify-between p-3.5 px-4 rounded-xl hover:bg-gray-100/30 cursor-pointer border-b border-gray-50/80 transition-all">
-          <div class="flex items-center gap-4">
-            <div class="w-[18px] h-[18px] rounded-md border-2 border-blue-500 bg-white hover:bg-blue-50 transition-colors shadow-sm"></div>
-            <span class="text-gray-700 font-medium">task_01</span>
-          </div>
-          <div class="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-all">
-            <span class="bg-red-100 text-red-500 text-[9px] px-1.5 py-0.5 rounded font-black">+1</span>
-            <span class="text-blue-500 text-[11px] font-semibold">Today</span>
-            <button class="text-gray-200 hover:text-gray-400 ml-1">
-              <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- Completed Section -->
-        <div class="mt-8 px-2">
-          <div class="flex items-center gap-2 py-2 text-gray-400 cursor-pointer hover:text-gray-600 transition-colors group">
-            <svg viewBox="0 0 24 24" class="w-4 h-4 transition-transform group-hover:rotate-0 -rotate-90" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
-            <span class="text-[13px] font-bold">Completed</span>
-            <span class="text-xs font-medium">1</span>
-          </div>
-
-          <!-- Completed Item Example -->
-          <div class="flex items-center justify-between p-3.5 px-4 opacity-50 bg-transparent hover:opacity-100 transition-opacity">
-            <div class="flex items-center gap-4">
-              <div class="w-[18px] h-[18px] rounded-md bg-gray-300 flex items-center justify-center text-white">
-                <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="4.5"><polyline points="19 6 9 17 4 12"/></svg>
-              </div>
-              <span class="text-gray-500 line-through font-medium">task_completed_01</span>
-            </div>
-            <div class="flex items-center gap-3">
-              <span class="bg-red-50 text-red-400 text-[9px] px-1.5 py-0.5 rounded font-black">+1</span>
-              <span class="text-gray-400 text-[11px] font-medium">Today</span>
-            </div>
-          </div>
-
-          <button class="mt-4 px-2 text-gray-400 text-xs font-bold hover:text-gray-600 transition-colors">
-            View more
-          </button>
-        </div>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 4px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #f1f1f1;
-      border-radius: 10px;
-    }
-  `]
+  templateUrl: './task-list.component.html',
+  styleUrl: './task-list.component.css'
 })
-export class TaskListComponent {}
+export class TaskListComponent { }
+
 
