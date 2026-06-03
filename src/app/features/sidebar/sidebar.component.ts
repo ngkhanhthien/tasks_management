@@ -64,8 +64,73 @@ import { NavigationService, AppType } from '../../core/services/navigation.servi
         </div>
       </div>
       
-      <div class="list-bar" *ngIf="navService.activeApp() === 'tasks'">
-        <div class="list-header">Lists</div>
+      <div class="list-bar w-[250px] flex flex-col bg-[#fefafa] h-full overflow-hidden" 
+           *ngIf="navService.activeApp() === 'tasks'">
+        <div class="flex-1 overflow-y-auto px-2 py-4 space-y-6">
+          <!-- Smart Lists -->
+          <div class="space-y-1">
+            <div class="group flex items-center justify-between p-2 rounded-lg hover:bg-black/5 cursor-pointer text-[#555]">
+              <div class="flex items-center gap-3">
+                <svg viewBox="0 0 24 24" class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/><circle cx="12" cy="14" r="2"/></svg>
+                <span class="text-sm font-medium">Today</span>
+              </div>
+              <span class="text-xs text-gray-400 group-hover:text-gray-600">0</span>
+            </div>
+            <div class="group flex items-center justify-between p-2 rounded-lg hover:bg-black/5 cursor-pointer text-[#555]">
+              <div class="flex items-center gap-3">
+                <svg viewBox="0 0 24 24" class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15.46V10a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3.54"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                <span class="text-sm font-medium">Next 7 Days</span>
+              </div>
+              <span class="text-xs text-gray-400 group-hover:text-gray-600">0</span>
+            </div>
+            <div class="group flex items-center justify-between p-2 rounded-lg bg-pink-100/50 cursor-pointer text-[#555]">
+              <div class="flex items-center gap-3">
+                <svg viewBox="0 0 24 24" class="w-5 h-5 text-pink-500" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12H2l3.38-9H18.6L22 12z"/><path d="M2 12l3 9h14l3-9"/><path d="M12 12v9"/></svg>
+                <span class="text-sm font-medium">Inbox</span>
+              </div>
+              <span class="text-xs text-gray-400 group-hover:text-gray-600">0</span>
+            </div>
+          </div>
+
+          <!-- Lists -->
+          <div class="space-y-1">
+            <h3 class="px-2 text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-1">Lists</h3>
+            <div class="flex items-center justify-between p-2 rounded-lg hover:bg-black/5 cursor-pointer text-[#555]">
+              <div class="flex items-center gap-3">
+                <span class="w-2.5 h-2.5 rounded-sm bg-yellow-400"></span>
+                <span class="text-sm">list_1</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div class="space-y-1">
+            <h3 class="px-2 text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-1">Filters</h3>
+            <div class="p-2 text-xs text-gray-400 italic px-3">
+              Display tasks filtered by list, date, priority, tag, and more
+            </div>
+          </div>
+
+          <!-- Tags -->
+          <div class="space-y-1">
+            <h3 class="px-2 text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-1">Tags</h3>
+            <div class="flex items-center justify-between p-2 rounded-lg hover:bg-black/5 cursor-pointer text-[#555]">
+              <div class="flex items-center gap-3">
+                <svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82zM7 7h.01"/></svg>
+                <span class="text-sm">tag_1</span>
+              </div>
+              <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="p-2 border-t border-gray-100 bg-[#fdf2f2]/50">
+          <div class="flex items-center gap-2 p-2 rounded-lg hover:bg-black/5 cursor-pointer text-gray-500">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 text-amber-500" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span class="text-xs font-semibold">Upgrade to Premium</span>
+          </div>
+        </div>
       </div>
     </div>
   `,
@@ -131,16 +196,6 @@ import { NavigationService, AppType } from '../../core/services/navigation.servi
     .nav-item.active {
       color: #b56c6c;
       background: rgba(223, 155, 155, 0.2);
-    }
-    .list-bar {
-      width: 250px;
-      padding: 20px;
-      background: #fdfdfd;
-    }
-    .list-header {
-      font-weight: 600;
-      color: #333;
-      font-size: 14px;
     }
   `]
 })
