@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { AppLayoutComponent } from './core/layouts/app-layout/app-layout.component';
+import { AppLayoutComponent } from './layout/app-layout/app-layout.component';
 
 @Component({
   selector: 'app-root',

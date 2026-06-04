@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SidebarComponent } from '../../../features/sidebar/sidebar.component';
-import { TaskListComponent } from '../../../features/tasks/task-list/task-list.component';
-import { TaskDetailComponent } from '../../../features/tasks/task-detail/task-detail.component';
-import { NavigationService } from '../../../core/services/navigation.service';
+import { SidebarComponent } from '../../features/sidebar/sidebar.component';
+import { TaskListComponent } from '../../features/tasks/task-list/task-list.component';
+import { TaskDetailComponent } from '../../features/tasks/task-detail/task-detail.component';
+import { NavigationService } from '../../core/services/navigation.service';
 
 @Component({
   selector: 'app-layout',
