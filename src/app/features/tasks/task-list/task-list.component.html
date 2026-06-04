@@ -194,6 +194,8 @@
     <!-- Active Tasks -->
     @for (task of activeTasks(); track task.id) {
       <div
+        (click)="tasksStore.selectTask(task.id)"
+        [class.bg-blue-50]="tasksStore.selectedTaskId() === task.id"
         class="group flex items-center justify-between p-3.5 px-4 rounded-xl hover:bg-gray-100/30 cursor-pointer border-b border-gray-50/80 transition-all">
         <div class="flex items-center gap-4">
           <div
@@ -230,7 +232,9 @@
       <!-- Completed Items -->
       @for (task of completedTasks(); track task.id) {
         <div
-          class="flex items-center justify-between p-3.5 px-4 opacity-50 bg-transparent hover:opacity-100 transition-opacity">
+          (click)="tasksStore.selectTask(task.id)"
+          [class.bg-gray-100]="tasksStore.selectedTaskId() === task.id"
+          class="flex items-center justify-between p-3.5 px-4 opacity-50 bg-transparent hover:opacity-100 transition-opacity cursor-pointer rounded-xl">
           <div class="flex items-center gap-4">
             <div class="w-[18px] h-[18px] rounded-md bg-gray-300 flex items-center justify-center text-white flex-shrink-0">
               <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="4.5">
