@@ -32,7 +32,7 @@
   <!-- Add Task -->
   <div class="px-6 mb-4">
     <div
-      class="flex items-center gap-3 bg-gray-50/70 hover:bg-gray-100/50 border border-transparent focus-within:border-blue-300 focus-within:bg-white px-4 py-2.5 rounded-xl cursor-text group transition-all shadow-sm">
+      class="relative flex items-center gap-3 bg-gray-50/70 hover:bg-gray-100/50 border border-transparent focus-within:border-blue-300 focus-within:bg-white px-4 py-2.5 rounded-xl cursor-text group transition-all shadow-sm">
       <svg viewBox="0 0 24 24" class="w-5 h-5 text-gray-400 group-focus-within:text-blue-500 flex-shrink-0" fill="none"
         stroke="currentColor" stroke-width="3">
         <line x1="12" y1="5" x2="12" y2="19" />
@@ -59,7 +59,9 @@
       </div>
 
       <!-- Right: Date Selector -->
-      <button class="flex items-center gap-1.5 flex-shrink-0 text-blue-500 px-2 py-1 rounded-[6px] hover:bg-blue-50 focus-within:bg-blue-50 transition-colors border border-transparent">
+      <button 
+        (click)="showDatePicker = !showDatePicker"
+        class="flex items-center gap-1.5 flex-shrink-0 text-blue-500 px-2 py-1 rounded-[6px] hover:bg-blue-50 focus-within:bg-blue-50 transition-colors border border-transparent">
         <svg viewBox="0 0 24 24" class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="4" width="18" height="18" rx="3.5" ry="3.5" />
           <path d="M16 2v4" />
@@ -72,6 +74,117 @@
           <polyline points="6 9 12 15 18 9" />
         </svg>
       </button>
+
+      <!-- DatePicker Popover Dropdown (Static UI for testing) -->
+      @if (showDatePicker) {
+        <div class="absolute right-0 top-[calc(100%+8px)] w-[300px] bg-white rounded-2xl shadow-[0_10px_40px_-5px_rgba(0,0,0,0.15)] border border-gray-100 z-50 p-4 flex flex-col gap-4 origin-top-right">
+          
+          <!-- Top Tabs -->
+          <div class="bg-gray-100/80 p-0.5 rounded-lg flex text-xs font-semibold text-gray-500">
+            <button class="flex-1 bg-white text-gray-800 shadow-sm rounded-md py-1.5 transition-colors border border-gray-200/50">Date</button>
+            <button class="flex-1 hover:text-gray-700 py-1.5 rounded-md transition-colors">Duration</button>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="flex justify-between items-center px-3">
+            <button class="text-gray-400 hover:text-gray-700 transition">
+              <svg class="w-[22px] h-[22px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            </button>
+            <button class="text-gray-400 hover:text-gray-700 transition">
+              <svg class="w-[22px] h-[22px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+            </button>
+            <button class="text-gray-400 hover:text-gray-700 transition">
+              <svg class="w-[22px] h-[22px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="3.5" ry="3.5" /><path d="M16 2v4M8 2v4M3 10h18"/><text x="12" y="17" text-anchor="middle" font-size="7.5" font-weight="bold" fill="currentColor">+7</text></svg>
+            </button>
+            <button class="text-gray-400 hover:text-gray-700 transition">
+              <svg class="w-[22px] h-[22px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+            </button>
+          </div>
+
+          <!-- Calendar Header -->
+          <div class="flex justify-between items-center text-gray-800 px-1 mt-1">
+            <span class="text-[14px] font-semibold tracking-tight">June 2026</span>
+            <div class="flex gap-2">
+              <button class="text-gray-400 hover:text-gray-600"><svg class="w-[14px] h-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg></button>
+              <button class="text-gray-400 hover:text-gray-600"><svg class="w-[14px] h-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="12" cy="12" r="8"/></svg></button>
+              <button class="text-gray-400 hover:text-gray-600"><svg class="w-[14px] h-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" /></svg></button>
+            </div>
+          </div>
+
+          <!-- Calendar Grid -->
+          <div class="text-[13px] px-1">
+            <div class="grid grid-cols-7 text-center text-gray-400 font-semibold mb-3 scale-90">
+              <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+            </div>
+            <div class="grid grid-cols-7 text-center text-gray-700 gap-y-3 font-medium">
+              <!-- Row 1 -->
+              <span class="opacity-30">31</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">1</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">2</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">3</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">4</span>
+              <span class="cursor-pointer bg-[#ff6b6b] text-white rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto shadow-sm shadow-red-200 font-bold">5</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">6</span>
+              <!-- Row 2 -->
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">7</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">8</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">9</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">10</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">11</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">12</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">13</span>
+              <!-- Skipping rows for brevity on UI Mockup -->
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">14</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">15</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">16</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">17</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">18</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">19</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">20</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">21</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">22</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">23</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">24</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">25</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">26</span>
+              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">27</span>
+            </div>
+          </div>
+          
+          <hr class="border-gray-50 my-1"/>
+
+          <!-- List Options -->
+          <div class="flex flex-col text-[14px] font-medium text-gray-600">
+            <button class="flex items-center justify-between px-2 py-2 hover:bg-gray-50 rounded-lg group">
+              <div class="flex items-center gap-3">
+                <svg class="w-[18px] h-[18px] text-gray-400 group-hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                <span>Time</span>
+              </div>
+              <svg class="w-3.5 h-3.5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M9 18l6-6-6-6" /></svg>
+            </button>
+            <button class="flex items-center justify-between px-2 py-2 hover:bg-gray-50 rounded-lg group">
+              <div class="flex items-center gap-3">
+                <svg class="w-[18px] h-[18px] text-gray-400 group-hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2"><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M18.63 13A17.89 17.89 0 0 1 18 8"/><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M18 8a6 6 0 0 0-9.33-5"/></svg>
+                <span>Reminder</span>
+              </div>
+              <svg class="w-3.5 h-3.5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M9 18l6-6-6-6" /></svg>
+            </button>
+            <button class="flex items-center justify-between px-2 py-2 hover:bg-gray-50 rounded-lg group">
+              <div class="flex items-center gap-3">
+                <svg class="w-[18px] h-[18px] text-gray-400 group-hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                <span>Repeat</span>
+              </div>
+              <svg class="w-3.5 h-3.5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M9 18l6-6-6-6" /></svg>
+            </button>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex gap-3 justify-end mt-2">
+            <button class="flex-1 px-4 py-2 text-sm font-semibold text-gray-500 hover:bg-gray-50 border border-gray-200 rounded-lg transition-colors">Clear</button>
+            <button class="flex-1 px-4 py-2 text-sm font-semibold text-white bg-[#ff6b6b] hover:bg-[#ff5252] shadow-sm rounded-lg transition-colors">OK</button>
+          </div>
+        </div>
+      }
     </div>
   </div>
 

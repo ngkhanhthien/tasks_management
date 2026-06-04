@@ -18,6 +18,7 @@ export interface Task {
 })
 export class TaskListComponent {
   newTaskTitle = '';
+  showDatePicker = false;
 
   tasks = signal<Task[]>([
     { id: 1, title: 'task_01', completed: false, createdAt: new Date() }
