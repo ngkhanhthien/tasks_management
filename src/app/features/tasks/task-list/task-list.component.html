@@ -32,19 +32,46 @@
   <!-- Add Task -->
   <div class="px-6 mb-4">
     <div
-      class="flex items-center gap-3 bg-gray-50/70 hover:bg-gray-100/50 border border-transparent focus-within:border-blue-300 px-4 py-2.5 rounded-xl cursor-text group transition-all">
+      class="flex items-center gap-3 bg-gray-50/70 hover:bg-gray-100/50 border border-transparent focus-within:border-blue-300 focus-within:bg-white px-4 py-2.5 rounded-xl cursor-text group transition-all shadow-sm">
       <svg viewBox="0 0 24 24" class="w-5 h-5 text-gray-400 group-focus-within:text-blue-500 flex-shrink-0" fill="none"
         stroke="currentColor" stroke-width="3">
         <line x1="12" y1="5" x2="12" y2="19" />
         <line x1="5" y1="12" x2="19" y2="12" />
       </svg>
-      <input
-        type="text"
-        [(ngModel)]="newTaskTitle"
-        (keydown.enter)="addTask()"
-        placeholder="Add task"
-        class="flex-1 bg-transparent text-gray-700 text-sm font-medium placeholder-gray-400 outline-none"
-      />
+      
+      <!-- Center: Tags + Real Input -->
+      <div class="flex-1 flex items-center gap-1.5 overflow-hidden">
+        <!-- Render Tags -->
+        <span class="inline-flex items-center text-[#ff6b6b] bg-[#fff0f0] px-2 py-0.5 rounded-[4px] text-[13px] font-medium leading-tight whitespace-nowrap">
+          #good
+        </span>
+        
+        <!-- text cursor -->
+        <div class="h-4 w-[1px] bg-black/60 hidden group-focus-within:block animate-pulse -ml-0.5 mr-1"></div>
+        
+        <input
+          type="text"
+          [(ngModel)]="newTaskTitle"
+          (keydown.enter)="addTask()"
+          placeholder="Add task"
+          class="flex-1 bg-transparent text-gray-700 text-sm font-medium placeholder-gray-400 outline-none min-w-0"
+        />
+      </div>
+
+      <!-- Right: Date Selector -->
+      <button class="flex items-center gap-1.5 flex-shrink-0 text-blue-500 px-2 py-1 rounded-[6px] hover:bg-blue-50 focus-within:bg-blue-50 transition-colors border border-transparent">
+        <svg viewBox="0 0 24 24" class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="3.5" ry="3.5" />
+          <path d="M16 2v4" />
+          <path d="M8 2v4" />
+          <path d="M3 10h18" />
+          <text x="12" y="17" text-anchor="middle" font-size="7" font-weight="bold" fill="currentColor">5</text>
+        </svg>
+        <span class="text-[13px] font-semibold tracking-wide">Today</span>
+        <svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-500 ml-0.5 group-hover:text-gray-700" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
     </div>
   </div>
 
