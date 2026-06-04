@@ -1,13 +1,8 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-export interface Task {
-  id: number;
-  title: string;
-  completed: boolean;
-  createdAt: Date;
-}
+import { TasksStore } from '../state/tasks.store';
+import { Task } from '../models/task.model';
 
 @Component({
   selector: 'app-task-list',
@@ -17,39 +12,28 @@ export interface Task {
   styleUrl: './task-list.component.css'
 })
 export class TaskListComponent {
+  tasksStore = inject(TasksStore);
+
   newTaskTitle = '';
   showDatePicker = false;
 
-  tasks = signal<Task[]>([
-    { id: 1, title: 'task_01', completed: false, createdAt: new Date() }
-  ]);
-
-  completedTasks = signal<Task[]>([
-    { id: 0, title: 'task_completed_01', completed: true, createdAt: new Date() }
-  ]);
-
-  activeTasks = computed(() => this.tasks().filter(t => !t.completed));
+  // Map signals from the store to the component
+  activeTasks = this.tasksStore.activeTasks;
+  completedTasks = this.tasksStore.completedTasks;
 
   addTask(): void {
     const title = this.newTaskTitle.trim();
     if (!title) return;
 
-    const newTask: Task = {
-      id: Date.now(),
+    this.tasksStore.addTask({
       title,
-      completed: false,
-      createdAt: new Date()
-    };
-
-    this.tasks.update(tasks => [...tasks, newTask]);
+      status: 'todo',
+      priority: 'none'
+    });
     this.newTaskTitle = '';
   }
 
   completeTask(task: Task): void {
-    this.tasks.update(tasks => tasks.filter(t => t.id !== task.id));
-    this.completedTasks.update(completed => [
-      { ...task, completed: true },
-      ...completed
-    ]);
+    this.tasksStore.toggleTaskStatus(task.id);
   }
 }
