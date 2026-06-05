@@ -1,9 +1,53 @@
-<div class="flex h-screen">
+<div 
+  class="h-screen w-screen flex overflow-hidden bg-gray-50 text-gray-800 font-sans transition-opacity"
+  [class.cursor-col-resize]="isDraggingSidebar || isDraggingDetail"
+  [class.select-none]="isDraggingSidebar || isDraggingDetail">
+  
+  <ng-container *ngIf="navService.activeApp() === 'tasks'">
+    
+    <!-- Left Column: Sidebar (x) -->
+    <app-sidebar 
+      [style.width.px]="sidebarWidth()"
+      class="h-full flex-shrink-0 z-20 shadow-sm relative shrink-0">
+    </app-sidebar>
 
-    <app-sidebar />
+    <!-- Splitter 1: Between Sidebar and TaskList -->
+    <div 
+      class="w-[3px] hover:w-[4px] hover:bg-blue-400 cursor-col-resize z-30 transition-colors flex-shrink-0"
+      [class.bg-blue-400]="isDraggingSidebar"
+      [class.bg-transparent]="!isDraggingSidebar"
+      (mousedown)="startDragSidebar($event)">
+    </div>
 
-    <app-task-list />
+    <!-- Middle Column: Task List (y) -->
+    <!-- Using flex-1 to automatically fill remaining space (Total - x - z) -->
+    <main class="flex-1 flex h-full relative min-w-[200px] bg-white z-10 border-x border-gray-100 flex-shrink">
+      <app-task-list class="w-full h-full"></app-task-list>
+    </main>
+    
+    <!-- Splitter 2: Between TaskList and TaskDetail -->
+    <div 
+      class="w-[3px] hover:w-[4px] hover:bg-blue-400 cursor-col-resize z-30 transition-colors flex-shrink-0"
+      [class.bg-blue-400]="isDraggingDetail"
+      [class.bg-transparent]="!isDraggingDetail"
+      (mousedown)="startDragDetail($event)">
+    </div>
 
-    <app-task-detail />
+    <!-- Right Column: Task Detail (z) -->
+    <app-task-detail 
+      [style.width.px]="detailWidth()"
+      class="h-full bg-white z-0 flex-shrink-0">
+    </app-task-detail>
+    
+  </ng-container>
 
+  <!-- Default Fallback View for non-tasks apps -->
+  <main class="flex-1 flex items-center justify-center bg-gray-50 text-gray-400" *ngIf="navService.activeApp() !== 'tasks'">
+    <div class="flex flex-col items-center gap-4">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+      </svg>
+      <span class="text-lg font-medium tracking-wide">Coming Soon: {{ navService.activeApp() | titlecase }}</span>
+    </div>
+  </main>
 </div>

@@ -1,12 +1,14 @@
 .sidebar-container {
   display: flex;
   height: 100%;
+  width: 100%;
   background: #f5ecec;
   border-right: 1px solid #e8d5d5;
 }
 
 .nav-bar {
-  width: 50px;
+  width: 54px;
+  flex-shrink: 0;
   height: 100%;
   background: #eddede;
   border-right: 1px solid #e0cccc;
