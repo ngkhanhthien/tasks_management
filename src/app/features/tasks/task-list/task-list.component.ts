@@ -21,6 +21,21 @@ export class TaskListComponent {
   activeTasks = this.tasksStore.activeTasks;
   completedTasks = this.tasksStore.completedTasks;
 
+  isInputFocused = signal(false);
+  hasExplicitSelection = signal(false);
+
+  // Picker view state
+  pickerView = signal<'date' | 'time'>('date');
+  selectedTime = signal<string | null>(null);
+  
+  // Available times for the list
+  times = signal<string[]>([
+    '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
+    '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30',
+    '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30',
+    '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30'
+  ]);
+
   // Date picker logic
   selectedDate = signal<Date | null>(new Date());
   tempSelectedDate = signal<Date | null>(new Date());
@@ -35,12 +50,16 @@ export class TaskListComponent {
       title,
       status: 'todo',
       priority: 'none',
-      dueDate: this.selectedDate() || undefined
+      dueDate: this.selectedDate() || undefined,
+      dueTime: this.selectedTime() || undefined
     });
     this.newTaskTitle = '';
     // Reset to today after adding
     this.selectedDate.set(new Date());
     this.tempSelectedDate.set(new Date());
+    this.selectedTime.set(null);
+    this.showDatePicker = false;
+    this.hasExplicitSelection.set(false);
   }
 
   completeTask(task: Task): void {
@@ -52,7 +71,33 @@ export class TaskListComponent {
     this.showDatePicker = !this.showDatePicker;
     if (this.showDatePicker) {
       this.tempSelectedDate.set(this.selectedDate());
+      this.pickerView.set('date');
     }
+  }
+
+  showTimeView() {
+    this.pickerView.set('time');
+  }
+
+  hideTimeView() {
+    this.pickerView.set('date');
+  }
+
+  selectTime(time: string) {
+    this.selectedTime.set(time);
+    this.hasExplicitSelection.set(true);
+    this.pickerView.set('date');
+  }
+
+  removeTime() {
+    this.selectedTime.set(null);
+  }
+
+  getFormattedDate(date: Date | null): string {
+    if (!date) return 'No Date';
+    if (!this.hasExplicitSelection()) return 'Today';
+    
+    return date.toLocaleString('en-US', { month: 'short', day: 'numeric' });
   }
 
   selectDate(day: number) {
@@ -63,6 +108,7 @@ export class TaskListComponent {
 
   confirmDate() {
     this.selectedDate.set(this.tempSelectedDate());
+    this.hasExplicitSelection.set(true);
     this.showDatePicker = false;
   }
 

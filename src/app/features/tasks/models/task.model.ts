@@ -8,6 +8,7 @@ export interface Task {
   status: TaskStatus;
   priority: Priority;
   dueDate?: Date;
+  dueTime?: string;
   tags?: string[];
   listId?: string; // which custom list this belongs to, 'inbox' by default
   createdAt: Date;
