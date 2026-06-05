@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TasksStore } from '../state/tasks.store';
@@ -21,6 +21,12 @@ export class TaskListComponent {
   activeTasks = this.tasksStore.activeTasks;
   completedTasks = this.tasksStore.completedTasks;
 
+  // Date picker logic
+  selectedDate = signal<Date | null>(new Date());
+  tempSelectedDate = signal<Date | null>(new Date());
+  currentMonthDays = signal<number[]>(Array.from({length: 30}, (_, i) => i + 1));
+  currentMonthStr = signal<string>(new Date().toLocaleString('en-US', { month: 'short' })); // e.g., 'Jun'
+
   addTask(): void {
     const title = this.newTaskTitle.trim();
     if (!title) return;
@@ -28,12 +34,41 @@ export class TaskListComponent {
     this.tasksStore.addTask({
       title,
       status: 'todo',
-      priority: 'none'
+      priority: 'none',
+      dueDate: this.selectedDate() || undefined
     });
     this.newTaskTitle = '';
+    // Reset to today after adding
+    this.selectedDate.set(new Date());
+    this.tempSelectedDate.set(new Date());
   }
 
   completeTask(task: Task): void {
     this.tasksStore.toggleTaskStatus(task.id);
+  }
+
+  // Date picker actions
+  openDatePicker() {
+    this.showDatePicker = !this.showDatePicker;
+    if (this.showDatePicker) {
+      this.tempSelectedDate.set(this.selectedDate());
+    }
+  }
+
+  selectDate(day: number) {
+    const d = new Date();
+    d.setDate(day);
+    this.tempSelectedDate.set(d);
+  }
+
+  confirmDate() {
+    this.selectedDate.set(this.tempSelectedDate());
+    this.showDatePicker = false;
+  }
+
+  clearDate() {
+    this.selectedDate.set(null);
+    this.tempSelectedDate.set(null);
+    this.showDatePicker = false;
   }
 }

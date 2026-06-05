@@ -60,16 +60,22 @@
 
       <!-- Right: Date Selector -->
       <button 
-        (click)="showDatePicker = !showDatePicker"
+        (click)="openDatePicker()"
         class="flex items-center gap-1.5 flex-shrink-0 text-blue-500 px-2 py-1 rounded-[6px] hover:bg-blue-50 focus-within:bg-blue-50 transition-colors border border-transparent">
         <svg viewBox="0 0 24 24" class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="4" width="18" height="18" rx="3.5" ry="3.5" />
           <path d="M16 2v4" />
           <path d="M8 2v4" />
           <path d="M3 10h18" />
-          <text x="12" y="17" text-anchor="middle" font-size="7" font-weight="bold" fill="currentColor">5</text>
+          <text x="12" y="17" text-anchor="middle" font-size="7" font-weight="bold" fill="currentColor">{{ selectedDate() ? selectedDate()?.getDate() : '-' }}</text>
         </svg>
-        <span class="text-[13px] font-semibold tracking-wide">Today</span>
+        <span class="text-[13px] font-semibold tracking-wide">
+          @if (selectedDate(); as date) {
+            {{ date | date:'MMM d' }}
+          } @else {
+            No Date
+          }
+        </span>
         <svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-500 ml-0.5 group-hover:text-gray-700" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="6 9 12 15 18 9" />
         </svg>
@@ -103,7 +109,7 @@
 
           <!-- Calendar Header -->
           <div class="flex justify-between items-center text-gray-800 px-1 mt-1">
-            <span class="text-[14px] font-semibold tracking-tight">June 2026</span>
+            <span class="text-[14px] font-semibold tracking-tight">{{ currentMonthStr() }} 2026</span>
             <div class="flex gap-2">
               <button class="text-gray-400 hover:text-gray-600"><svg class="w-[14px] h-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg></button>
               <button class="text-gray-400 hover:text-gray-600"><svg class="w-[14px] h-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="12" cy="12" r="8"/></svg></button>
@@ -117,37 +123,21 @@
               <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
             </div>
             <div class="grid grid-cols-7 text-center text-gray-700 gap-y-3 font-medium">
-              <!-- Row 1 -->
+              <!-- Using standard padding so 1 starts correctly (mocking month start) -->
               <span class="opacity-30">31</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">1</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">2</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">3</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">4</span>
-              <span class="cursor-pointer bg-[#ff6b6b] text-white rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto shadow-sm shadow-red-200 font-bold">5</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">6</span>
-              <!-- Row 2 -->
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">7</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">8</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">9</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">10</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">11</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">12</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">13</span>
-              <!-- Skipping rows for brevity on UI Mockup -->
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">14</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">15</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">16</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">17</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">18</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">19</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">20</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">21</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">22</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">23</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">24</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">25</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">26</span>
-              <span class="cursor-pointer hover:bg-gray-100 rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto">27</span>
+              @for (day of currentMonthDays(); track day) {
+                <span 
+                  (click)="selectDate(day)"
+                  class="cursor-pointer rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto"
+                  [class.bg-[#ff6b6b]]="tempSelectedDate()?.getDate() === day"
+                  [class.text-white]="tempSelectedDate()?.getDate() === day"
+                  [class.font-bold]="tempSelectedDate()?.getDate() === day"
+                  [class.shadow-sm]="tempSelectedDate()?.getDate() === day"
+                  [class.shadow-red-200]="tempSelectedDate()?.getDate() === day"
+                  [class.hover:bg-gray-100]="tempSelectedDate()?.getDate() !== day">
+                  {{ day }}
+                </span>
+              }
             </div>
           </div>
           
@@ -180,8 +170,8 @@
 
           <!-- Buttons -->
           <div class="flex gap-3 justify-end mt-2">
-            <button class="flex-1 px-4 py-2 text-sm font-semibold text-gray-500 hover:bg-gray-50 border border-gray-200 rounded-lg transition-colors">Clear</button>
-            <button class="flex-1 px-4 py-2 text-sm font-semibold text-white bg-[#ff6b6b] hover:bg-[#ff5252] shadow-sm rounded-lg transition-colors">OK</button>
+            <button (click)="clearDate()" class="flex-1 px-4 py-2 text-sm font-semibold text-gray-500 hover:bg-gray-50 border border-gray-200 rounded-lg transition-colors">Clear</button>
+            <button (click)="confirmDate()" class="flex-1 px-4 py-2 text-sm font-semibold text-white bg-[#ff6b6b] hover:bg-[#ff5252] shadow-sm rounded-lg transition-colors">OK</button>
           </div>
         </div>
       }
@@ -204,8 +194,15 @@
           </div>
           <span class="text-gray-700 font-medium">{{ task.title }}</span>
         </div>
-        <div class="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-all">
-          <span class="text-blue-500 text-[11px] font-semibold">Today</span>
+        <div class="flex items-center gap-3 transition-all" [class.opacity-100]="!!task.dueDate" [class.opacity-0]="!task.dueDate" [class.group-hover:opacity-100]="!task.dueDate">
+          @if (task.dueDate) {
+            <span class="text-blue-500 text-[11px] font-semibold flex items-center gap-1">
+              <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
+              {{ task.dueDate | date:'MMM d' }}
+            </span>
+          } @else {
+            <span class="text-gray-400 text-[11px] font-semibold">No Date</span>
+          }
           <button class="text-gray-200 hover:text-gray-400 ml-1">
             <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3">
               <circle cx="12" cy="12" r="1" />
