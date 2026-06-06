@@ -117,4 +117,33 @@ export class TaskListComponent {
     this.tempSelectedDate.set(null);
     this.showDatePicker = false;
   }
+
+  isOverdue(date: Date | string | undefined): boolean {
+    if (!date) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0);
+    return d.getTime() < today.getTime();
+  }
+
+  formatTaskDate(date: Date | string | undefined): string {
+    if (!date) return 'No Date';
+    
+    const d = new Date(date);
+    const today = new Date();
+    
+    d.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    
+    const diffTime = d.getTime() - today.getTime();
+    const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) return 'Today';
+    if (diffDays === -1) return 'Yesterday';
+    if (diffDays === 1) return 'Tomorrow';
+    
+    return d.toLocaleString('en-US', { month: 'short', day: 'numeric' });
+  }
 }
