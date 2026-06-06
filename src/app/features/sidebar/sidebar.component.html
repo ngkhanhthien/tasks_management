@@ -181,7 +181,7 @@
             </svg>
             <h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-widest translate-y-[0.5px] group-hover:text-gray-500">Tags</h3>
           </div>
-          <button class="text-gray-400 hover:text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity p-0.5">
+          <button (click)="showAddTagModal.set(true); $event.stopPropagation()" class="text-gray-400 hover:text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity p-0.5">
             <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
           </button>
         </div>
@@ -212,3 +212,11 @@
     </div>
   </div>
 </div>
+
+<!-- Add Tag Modal -->
+@if (showAddTagModal()) {
+  <app-add-tag-modal 
+    (close)="showAddTagModal.set(false)"
+    (save)="showAddTagModal.set(false)">
+  </app-add-tag-modal>
+}
