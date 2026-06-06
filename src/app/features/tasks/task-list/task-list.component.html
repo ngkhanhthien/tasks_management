@@ -11,7 +11,7 @@
           <path d="m15 15-3-3" />
         </svg>
       </button>
-      <h1 class="text-2xl font-bold text-gray-800">Inbox</h1>
+      <h1 class="text-2xl font-bold text-gray-800 capitalize">{{ tasksStore.filter() === 'next7days' ? 'Next 7 Days' : tasksStore.filter() }}</h1>
     </div>
     <div class="flex items-center gap-4">
       <button class="text-gray-400 hover:text-gray-600 transition-colors">

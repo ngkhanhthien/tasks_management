@@ -8,18 +8,47 @@ export class TasksStore {
   // State
   private readonly _tasks = signal<Task[]>([]);
   private readonly _selectedTaskId = signal<string | null>(null);
+  private readonly _filter = signal<'inbox' | 'today' | 'next7days'>('inbox');
 
   // Computed
   readonly tasks = this._tasks.asReadonly();
   readonly selectedTaskId = this._selectedTaskId.asReadonly();
+  readonly filter = this._filter.asReadonly();
   
-  readonly activeTasks = computed(() => 
-    this._tasks().filter(t => t.status === 'todo')
-  );
+  readonly activeTasks = computed(() => {
+    let tasks = this._tasks().filter(t => t.status === 'todo');
+    const filter = this._filter();
+    
+    if (filter === 'today') {
+      const todayEnd = new Date();
+      todayEnd.setHours(23, 59, 59, 999);
+      
+      tasks = tasks.filter(t => {
+        if (!t.dueDate) return false;
+        const d = new Date(t.dueDate);
+        return d.getTime() <= todayEnd.getTime();
+      });
+    }
+    return tasks;
+  });
   
-  readonly completedTasks = computed(() => 
-    this._tasks().filter(t => t.status === 'completed')
-  );
+  readonly completedTasks = computed(() => {
+    let tasks = this._tasks().filter(t => t.status === 'completed');
+    const filter = this._filter();
+    
+    if (filter === 'today') {
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+      const todayEnd = new Date();
+      todayEnd.setHours(23, 59, 59, 999);
+      
+      tasks = tasks.filter(t => {
+        const d = new Date(t.updatedAt);
+        return d.getTime() >= todayStart.getTime() && d.getTime() <= todayEnd.getTime();
+      });
+    }
+    return tasks;
+  });
 
   readonly selectedTask = computed(() => 
     this._tasks().find(t => t.id === this._selectedTaskId()) || null
@@ -101,5 +130,10 @@ export class TasksStore {
 
   clearSelection() {
     this._selectedTaskId.set(null);
+  }
+
+  setFilter(filter: 'inbox' | 'today' | 'next7days') {
+    this._filter.set(filter);
+    this.clearSelection();
   }
 }
