@@ -125,7 +125,7 @@
             <svg viewBox="0 0 24 24" class="w-4 h-4 transition-transform text-gray-400 group-hover/header:text-gray-600" [class.-rotate-90]="!isGroupExpanded(group.id)" fill="none" stroke="currentColor" stroke-width="3">
               <polyline points="6 9 12 15 18 9" />
             </svg>
-            <span class="text-[13px] font-bold">{{ group.title }}</span>
+            <h6 class="text-sm font-bold tracking-tight">{{ group.title }}</h6>
             <span class="text-xs font-medium opacity-50">{{ group.tasks.length }}</span>
           </div>
 
@@ -135,13 +135,13 @@
               <div
                 (click)="tasksStore.selectTask(task.id)"
                 [class.bg-blue-50]="tasksStore.selectedTaskId() === task.id"
-                class="group flex items-center justify-between p-3.5 px-4 rounded-xl hover:bg-gray-100/30 cursor-pointer border-b border-gray-50/80 transition-all">
+                class="group flex items-center justify-between py-1.5 px-4 rounded-xl hover:bg-gray-100/30 cursor-pointer border-b border-gray-50/80 transition-all">
                 <div class="flex items-center gap-4">
                   <div
                     (click)="completeTask(task)"
                     class="w-[18px] h-[18px] rounded-md border-2 border-blue-500 bg-white hover:bg-blue-50 transition-colors shadow-sm cursor-pointer flex-shrink-0">
                   </div>
-                  <span class="text-gray-700 font-medium">{{ task.title }}</span>
+                  <span class="text-gray-700 text-[13px] font-normal">{{ task.title }}</span>
                 </div>
                 <div class="flex items-center gap-3" 
                      [class.opacity-100]="!!task.dueDate || editingTaskId() === task.id || activeMenuTaskId() === task.id" 
@@ -209,7 +209,7 @@
           stroke="currentColor" stroke-width="3">
           <polyline points="6 9 12 15 18 9" />
         </svg>
-        <span class="text-[13px] font-bold">Completed</span>
+        <h6 class="text-sm font-bold tracking-tight">Completed</h6>
         <span class="text-xs font-medium">{{ completedTasks().length }}</span>
       </div>
 
@@ -219,17 +219,17 @@
         <div
           (click)="tasksStore.selectTask(task.id)"
           [class.bg-gray-100]="tasksStore.selectedTaskId() === task.id"
-          class="flex items-center justify-between p-3.5 px-4 opacity-50 bg-transparent hover:opacity-100 transition-opacity cursor-pointer rounded-xl">
+          class="flex items-center justify-between py-1.5 px-4 opacity-50 bg-transparent hover:opacity-100 transition-opacity cursor-pointer rounded-xl">
           <div class="flex items-center gap-4">
             <div class="w-[18px] h-[18px] rounded-md bg-gray-300 flex items-center justify-center text-white flex-shrink-0">
               <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="4.5">
                 <polyline points="19 6 9 17 4 12" />
               </svg>
             </div>
-            <span class="text-gray-500 line-through font-medium">{{ task.title }}</span>
+            <span class="text-gray-500 line-through text-[13px] font-normal">{{ task.title }}</span>
           </div>
           <div class="flex items-center gap-3">
-            <span class="text-gray-400 text-[11px] font-medium">
+            <span class="text-gray-400 text-[10px] font-medium">
               {{ task.dueDate ? formatTaskDate(task.dueDate) : 'No Date' }}{{ task.dueTime ? ', ' + task.dueTime : '' }}
             </span>
           </div>
