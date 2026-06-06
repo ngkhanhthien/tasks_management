@@ -70,37 +70,39 @@ export class TaskListComponent {
       return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
     });
 
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+
     sortedTasks.forEach(task => {
         if (!task.dueDate) {
-          addGroup('nodate', 'No Date', Number.MAX_SAFE_INTEGER);
-          groupsMap.get('nodate')!.tasks.push(task);
+          addGroup('later', 'Later', Number.MAX_SAFE_INTEGER);
+          groupsMap.get('later')!.tasks.push(task);
           return;
         }
 
         const taskDate = new Date(task.dueDate);
-        taskDate.setHours(0,0,0,0);
-        const today = new Date();
-        today.setHours(0,0,0,0);
+        taskDate.setHours(0, 0, 0, 0);
         
-        const diffDays = Math.round((taskDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        const diffTime = taskDate.getTime() - now.getTime();
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
         
         if (diffDays < 0) {
             addGroup('overdue', 'Overdue', -1);
             groupsMap.get('overdue')!.tasks.push(task);
         } else if (diffDays === 0) {
-            const dayName = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(today);
+            const dayName = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(now);
             addGroup('today', `${dayName}, Today`, 0);
             groupsMap.get('today')!.tasks.push(task);
         } else if (diffDays === 1) {
             const dayName = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(taskDate);
             addGroup('tomorrow', `${dayName}, Tomorrow`, 1);
             groupsMap.get('tomorrow')!.tasks.push(task);
+        } else if (diffDays >= 2 && diffDays <= 7) {
+            addGroup('next7days', 'Next 7 Days', 2);
+            groupsMap.get('next7days')!.tasks.push(task);
         } else {
-            const dayName = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(taskDate);
-            const dateStr = taskDate.toLocaleString('en-US', { month: 'short', day: 'numeric' });
-            const id = taskDate.getFullYear() + '-' + String(taskDate.getMonth()+1).padStart(2, '0') + '-' + String(taskDate.getDate()).padStart(2, '0');
-            addGroup(id, `${dayName}, ${dateStr}`, diffDays);
-            groupsMap.get(id)!.tasks.push(task);
+            addGroup('later', 'Later', 3);
+            groupsMap.get('later')!.tasks.push(task);
         }
     });
 
