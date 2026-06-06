@@ -129,35 +129,74 @@
 
       <!-- Lists -->
       <div class="space-y-1">
-        <h3 class="px-2 text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-1">Lists</h3>
-        <div class="flex items-center justify-between p-2 rounded-lg hover:bg-black/5 cursor-pointer text-[#555]">
-          <div class="flex items-center gap-3">
-            <span class="w-2.5 h-2.5 rounded-sm bg-yellow-400"></span>
-            <span class="text-sm">list_1</span>
+        <div class="group flex items-center justify-between px-2 mb-1 py-1 cursor-pointer" (click)="toggleLists()">
+          <div class="flex items-center gap-1">
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gray-400 opacity-0 group-hover:opacity-100 hover:text-gray-600 transition-all cursor-pointer" [class.rotate-[-90deg]]="!isListsExpanded()" fill="none" stroke="currentColor" stroke-width="3">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+            <h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-widest translate-y-[0.5px] group-hover:text-gray-500">Lists</h3>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity p-0.5">
+            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+          </button>
+        </div>
+        
+        <div [class.hidden]="!isListsExpanded()" class="space-y-1">
+          <div class="flex items-center justify-between p-2 rounded-lg hover:bg-black/5 cursor-pointer text-[#555]">
+            <div class="flex items-center gap-3">
+              <span class="w-2.5 h-2.5 rounded-sm bg-yellow-400"></span>
+              <span class="text-sm">list_1</span>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- Filters -->
       <div class="space-y-1">
-        <h3 class="px-2 text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-1">Filters</h3>
-        <div class="p-2 text-xs text-gray-400 italic px-3">
-          Display tasks filtered by list, date, priority, tag, and more
+        <div class="group flex items-center justify-between px-2 mb-1 py-1 cursor-pointer" (click)="toggleFilters()">
+          <div class="flex items-center gap-1">
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gray-400 opacity-0 group-hover:opacity-100 hover:text-gray-600 transition-all cursor-pointer" [class.rotate-[-90deg]]="!isFiltersExpanded()" fill="none" stroke="currentColor" stroke-width="3">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+            <h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-widest translate-y-[0.5px] group-hover:text-gray-500">Filters</h3>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity p-0.5">
+            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+          </button>
+        </div>
+
+        <div [class.hidden]="!isFiltersExpanded()" class="space-y-1">
+          <div class="p-2 text-xs text-gray-400 italic px-3">
+            Display tasks filtered by list, date, priority, tag, and more
+          </div>
         </div>
       </div>
 
       <!-- Tags -->
       <div class="space-y-1">
-        <h3 class="px-2 text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-1">Tags</h3>
-        <div class="flex items-center justify-between p-2 rounded-lg hover:bg-black/5 cursor-pointer text-[#555]">
-          <div class="flex items-center gap-3">
-            <svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
-              stroke-width="2.5">
-              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82zM7 7h.01" />
+        <div class="group flex items-center justify-between px-2 mb-1 py-1 cursor-pointer" (click)="toggleTags()">
+          <div class="flex items-center gap-1">
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gray-400 opacity-0 group-hover:opacity-100 hover:text-gray-600 transition-all cursor-pointer" [class.rotate-[-90deg]]="!isTagsExpanded()" fill="none" stroke="currentColor" stroke-width="3">
+              <polyline points="6 9 12 15 18 9" />
             </svg>
-            <span class="text-sm">tag_1</span>
+            <h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-widest translate-y-[0.5px] group-hover:text-gray-500">Tags</h3>
           </div>
-          <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+          <button class="text-gray-400 hover:text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity p-0.5">
+            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+          </button>
+        </div>
+
+        <div [class.hidden]="!isTagsExpanded()" class="space-y-1">
+          <div class="flex items-center justify-between p-2 rounded-lg hover:bg-black/5 cursor-pointer text-[#555]">
+            <div class="flex items-center gap-3">
+              <svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
+                stroke-width="2.5">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82zM7 7h.01" />
+              </svg>
+              <span class="text-sm">tag_1</span>
+            </div>
+            <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+          </div>
         </div>
       </div>
     </div>
