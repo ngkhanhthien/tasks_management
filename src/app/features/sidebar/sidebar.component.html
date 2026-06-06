@@ -102,7 +102,7 @@
             </svg>
             <span class="text-sm font-medium">Today</span>
           </div>
-          <span class="text-xs text-gray-400 group-hover:text-gray-600">{{ tasksStore.filter() === 'today' ? tasksStore.activeTasks().length || '0' : '0' }}</span>
+          <span class="text-xs text-gray-400 group-hover:text-gray-600 font-medium">{{ tasksStore.todayCount() || '' }}</span>
         </div>
         <div (click)="tasksStore.setFilter('next7days')" [class.bg-purple-100]="tasksStore.filter() === 'next7days'" [class.bg-opacity-50]="tasksStore.filter() === 'next7days'" class="group flex items-center justify-between p-2 rounded-lg hover:bg-black/5 cursor-pointer text-[#555]">
           <div class="flex items-center gap-3">
@@ -112,7 +112,7 @@
             </svg>
             <span class="text-sm font-medium">Next 7 Days</span>
           </div>
-          <span class="text-xs text-gray-400 group-hover:text-gray-600">0</span>
+          <span class="text-xs text-gray-400 group-hover:text-gray-600 font-medium">{{ tasksStore.next7DaysCount() || '' }}</span>
         </div>
         <div (click)="tasksStore.setFilter('inbox')" [class.bg-pink-100]="tasksStore.filter() === 'inbox'" [class.bg-opacity-50]="tasksStore.filter() === 'inbox'" [class.hover:bg-black]="tasksStore.filter() !== 'inbox'" class="group flex items-center justify-between p-2 rounded-lg cursor-pointer text-[#555] hover:bg-opacity-5">
           <div class="flex items-center gap-3">
@@ -123,7 +123,7 @@
             </svg>
             <span class="text-sm font-medium">Inbox</span>
           </div>
-          <span class="text-xs text-gray-400 group-hover:text-gray-600">{{ tasksStore.filter() === 'inbox' ? tasksStore.activeTasks().length || '0' : '0' }}</span>
+          <span class="text-xs text-gray-400 group-hover:text-gray-600 font-medium">{{ tasksStore.inboxCount() || '' }}</span>
         </div>
       </div>
 

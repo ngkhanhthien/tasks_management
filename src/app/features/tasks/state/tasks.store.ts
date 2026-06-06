@@ -15,18 +15,44 @@ export class TasksStore {
   readonly selectedTaskId = this._selectedTaskId.asReadonly();
   readonly filter = this._filter.asReadonly();
   
+  readonly inboxCount = computed(() => {
+    return this._tasks().filter(t => t.status === 'todo').length;
+  });
+
+  readonly todayCount = computed(() => {
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
+    return this._tasks().filter(t => {
+      if (t.status !== 'todo' || !t.dueDate) return false;
+      return new Date(t.dueDate).getTime() <= todayEnd.getTime();
+    }).length;
+  });
+
+  readonly next7DaysCount = computed(() => {
+    const next7DaysEnd = new Date();
+    next7DaysEnd.setDate(next7DaysEnd.getDate() + 6);
+    next7DaysEnd.setHours(23, 59, 59, 999);
+    return this._tasks().filter(t => {
+      if (t.status !== 'todo' || !t.dueDate) return false;
+      return new Date(t.dueDate).getTime() <= next7DaysEnd.getTime();
+    }).length;
+  });
+
   readonly activeTasks = computed(() => {
     let tasks = this._tasks().filter(t => t.status === 'todo');
     const filter = this._filter();
     
-    if (filter === 'today') {
-      const todayEnd = new Date();
-      todayEnd.setHours(23, 59, 59, 999);
+    if (filter === 'today' || filter === 'next7days') {
+      const currentEnd = new Date();
+      if (filter === 'next7days') {
+        currentEnd.setDate(currentEnd.getDate() + 6);
+      }
+      currentEnd.setHours(23, 59, 59, 999);
       
       tasks = tasks.filter(t => {
         if (!t.dueDate) return false;
         const d = new Date(t.dueDate);
-        return d.getTime() <= todayEnd.getTime();
+        return d.getTime() <= currentEnd.getTime();
       });
     }
     return tasks;
@@ -36,15 +62,19 @@ export class TasksStore {
     let tasks = this._tasks().filter(t => t.status === 'completed');
     const filter = this._filter();
     
-    if (filter === 'today') {
+    if (filter === 'today' || filter === 'next7days') {
       const todayStart = new Date();
       todayStart.setHours(0, 0, 0, 0);
-      const todayEnd = new Date();
-      todayEnd.setHours(23, 59, 59, 999);
+      
+      const currentEnd = new Date();
+      if (filter === 'next7days') {
+        currentEnd.setDate(currentEnd.getDate() + 6);
+      }
+      currentEnd.setHours(23, 59, 59, 999);
       
       tasks = tasks.filter(t => {
         const d = new Date(t.updatedAt);
-        return d.getTime() >= todayStart.getTime() && d.getTime() <= todayEnd.getTime();
+        return d.getTime() >= todayStart.getTime() && d.getTime() <= currentEnd.getTime();
       });
     }
     return tasks;
