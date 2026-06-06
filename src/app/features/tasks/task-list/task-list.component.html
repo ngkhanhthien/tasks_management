@@ -63,10 +63,13 @@
       </div>
 
       <!-- Right: Date Selector & Context Menu -->
-      <div class="flex items-center gap-0.5 flex-shrink-0">
-        @if (isInputFocused() || newTaskTitle.length > 0 || showDatePicker || showTaskMenu() || hasExplicitSelection()) {
+      <div class="flex items-center gap-0.5 flex-shrink-0 transition-opacity duration-200"
+           [class.opacity-0]="!(isInputFocused() || newTaskTitle.length > 0 || showDatePicker || showTaskMenu() || hasExplicitSelection())"
+           [class.opacity-100]="isInputFocused() || newTaskTitle.length > 0 || showDatePicker || showTaskMenu() || hasExplicitSelection()"
+           [class.group-hover:opacity-100]="true">
+          
           <button 
-            (mousedown)="$event.preventDefault(); openDatePicker()"
+            (click)="$event.stopPropagation(); openDatePicker()"
             class="flex items-center gap-1.5 text-blue-500 px-2 py-1 rounded-l-[6px] hover:bg-blue-50 focus-within:bg-blue-50 transition-colors">
             <svg viewBox="0 0 24 24" class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="4" width="18" height="18" rx="3.5" ry="3.5" />
@@ -87,7 +90,6 @@
               <polyline points="6 9 12 15 18 9" />
             </svg>
           </button>
-        }
       </div>
 
       <!-- DatePicker Popover -->

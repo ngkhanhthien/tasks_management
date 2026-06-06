@@ -151,15 +151,19 @@ export class TaskListComponent {
 
   // Date picker actions
   openDatePicker() {
+    this.closeAllMenus();
     this.showDatePicker = true;
   }
 
   toggleTaskMenu() {
-    this.showTaskMenu.update(v => !v);
+    const nextState = !this.showTaskMenu();
+    this.closeAllMenus();
+    this.showTaskMenu.set(nextState);
   }
 
   openTaskMenu(taskId: string, event: MouseEvent) {
     event.stopPropagation();
+    this.closeAllMenus();
     this.activeMenuTaskId.set(taskId);
   }
 
@@ -196,7 +200,15 @@ export class TaskListComponent {
 
   editTaskDate(taskId: string, event: MouseEvent) {
     event.stopPropagation();
+    this.closeAllMenus();
     this.editingTaskId.set(taskId);
+  }
+
+  private closeAllMenus() {
+    this.showDatePicker = false;
+    this.showTaskMenu.set(false);
+    this.activeMenuTaskId.set(null);
+    this.editingTaskId.set(null);
   }
 
   getFormattedDate(date: Date | null): string {
