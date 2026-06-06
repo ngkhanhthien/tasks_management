@@ -1,15 +1,16 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TasksStore } from '../state/tasks.store';
-import { Task } from '../models/task.model';
+import { Task, Priority } from '../models/task.model';
 
 import { DatePickerComponent } from '../../../shared/ui/date-picker/date-picker.component';
+import { TaskMenuComponent } from '../../../shared/ui/task-menu/task-menu.component';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, DatePickerComponent],
+  imports: [CommonModule, FormsModule, DatePickerComponent, TaskMenuComponent],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.css'
 })
@@ -18,6 +19,9 @@ export class TaskListComponent {
 
   newTaskTitle = '';
   showDatePicker = false;
+  showTaskMenu = signal(false);
+  editingTaskId = signal<string | null>(null);
+  activeMenuTaskId = signal<string | null>(null);
 
   // Map signals from the store to the component
   activeTasks = this.tasksStore.activeTasks;
@@ -27,13 +31,22 @@ export class TaskListComponent {
   hasExplicitSelection = signal(false);
   isCompletedExpanded = signal(true);
   expandedGroups = signal<Record<string, boolean>>({});
-  editingTaskId = signal<string | null>(null);
 
   toggleGroup(groupId: string) {
     this.expandedGroups.update(groups => ({
       ...groups,
       [groupId]: groups[groupId] === undefined ? false : !groups[groupId]
     }));
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    // If we click anywhere else, close the open elements
+    // The specific components handle stopPropagation() on their own clicks
+    this.activeMenuTaskId.set(null);
+    this.showTaskMenu.set(false);
+    this.showDatePicker = false;
+    this.editingTaskId.set(null);
   }
 
   isGroupExpanded(groupId: string): boolean {
@@ -138,7 +151,21 @@ export class TaskListComponent {
 
   // Date picker actions
   openDatePicker() {
-    this.showDatePicker = !this.showDatePicker;
+    this.showDatePicker = true;
+  }
+
+  toggleTaskMenu() {
+    this.showTaskMenu.update(v => !v);
+  }
+
+  openTaskMenu(taskId: string, event: MouseEvent) {
+    event.stopPropagation();
+    this.activeMenuTaskId.set(taskId);
+  }
+
+  onTaskPrioritySelected(taskId: string, priority: Priority) {
+    this.tasksStore.updateTask(taskId, { priority });
+    this.activeMenuTaskId.set(null);
   }
 
   onNewTaskDateConfirmed(result: { date: Date | null, time: string | null }) {
