@@ -235,46 +235,64 @@
   <!-- Task Scrollable Content -->
   <div class="flex-1 overflow-y-auto px-4 pb-10 custom-scrollbar">
 
-    <!-- Active Tasks -->
-    @for (task of activeTasks(); track task.id) {
-      <div
-        (click)="tasksStore.selectTask(task.id)"
-        [class.bg-blue-50]="tasksStore.selectedTaskId() === task.id"
-        class="group flex items-center justify-between p-3.5 px-4 rounded-xl hover:bg-gray-100/30 cursor-pointer border-b border-gray-50/80 transition-all">
-        <div class="flex items-center gap-4">
-          <div
-            (click)="completeTask(task)"
-            class="w-[18px] h-[18px] rounded-md border-2 border-blue-500 bg-white hover:bg-blue-50 transition-colors shadow-sm cursor-pointer flex-shrink-0">
-          </div>
-          <span class="text-gray-700 font-medium">{{ task.title }}</span>
-        </div>
-        <div class="flex items-center gap-3 transition-all" [class.opacity-100]="!!task.dueDate" [class.opacity-0]="!task.dueDate" [class.group-hover:opacity-100]="!task.dueDate">
-          @if (task.dueDate) {
-            <span class="text-[11px] font-semibold flex items-center gap-1"
-                  [class.text-[#ff6b6b]]="isOverdue(task.dueDate)"
-                  [class.text-blue-500]="!isOverdue(task.dueDate)">
-              <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
-              {{ formatTaskDate(task.dueDate) }}{{ task.dueTime ? ', ' + task.dueTime : '' }}
-            </span>
-          } @else {
-            <span class="text-gray-400 text-[11px] font-semibold">No Date</span>
-          }
-          <button class="text-gray-200 hover:text-gray-400 ml-1">
-            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3">
-              <circle cx="12" cy="12" r="1" />
-              <circle cx="19" cy="12" r="1" />
-              <circle cx="5" cy="12" r="1" />
+    <!-- Active Tasks Grouped -->
+    @for (group of groupedActiveTasks(); track group.id) {
+      @if (group.tasks.length > 0) {
+        <div class="mt-4 first:mt-0">
+          <div (click)="toggleGroup(group.id)" class="flex items-center gap-2 py-2 text-gray-500 cursor-pointer hover:text-gray-700 transition-colors group/header px-2">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 transition-transform text-gray-400 group-hover/header:text-gray-600" [class.-rotate-90]="!isGroupExpanded(group.id)" fill="none" stroke="currentColor" stroke-width="3">
+              <polyline points="6 9 12 15 18 9" />
             </svg>
-          </button>
+            <span class="text-[13px] font-bold">{{ group.title }}</span>
+            <span class="text-xs font-medium opacity-50">{{ group.tasks.length }}</span>
+          </div>
+
+          <!-- Group Items -->
+          <div class="space-y-0.5 mt-1 transition-all" [class.hidden]="!isGroupExpanded(group.id)">
+            @for (task of group.tasks; track task.id) {
+              <div
+                (click)="tasksStore.selectTask(task.id)"
+                [class.bg-blue-50]="tasksStore.selectedTaskId() === task.id"
+                class="group flex items-center justify-between p-3.5 px-4 rounded-xl hover:bg-gray-100/30 cursor-pointer border-b border-gray-50/80 transition-all">
+                <div class="flex items-center gap-4">
+                  <div
+                    (click)="completeTask(task)"
+                    class="w-[18px] h-[18px] rounded-md border-2 border-blue-500 bg-white hover:bg-blue-50 transition-colors shadow-sm cursor-pointer flex-shrink-0">
+                  </div>
+                  <span class="text-gray-700 font-medium">{{ task.title }}</span>
+                </div>
+                <div class="flex items-center gap-3 transition-all" [class.opacity-100]="!!task.dueDate" [class.opacity-0]="!task.dueDate" [class.group-hover:opacity-100]="!task.dueDate">
+                  @if (task.dueDate) {
+                    <span class="text-[11px] font-semibold flex items-center gap-1"
+                          [class.text-[#ff6b6b]]="isOverdue(task.dueDate)"
+                          [class.text-blue-500]="!isOverdue(task.dueDate)">
+                      <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
+                      {{ formatTaskDate(task.dueDate) }}{{ task.dueTime ? ', ' + task.dueTime : '' }}
+                    </span>
+                  } @else {
+                    <span class="text-gray-400 text-[11px] font-semibold">No Date</span>
+                  }
+                  <button class="text-gray-200 hover:text-gray-400 ml-1">
+                    <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3">
+                      <circle cx="12" cy="12" r="1" />
+                      <circle cx="19" cy="12" r="1" />
+                      <circle cx="5" cy="12" r="1" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
         </div>
-      </div>
+      }
     }
 
     <!-- Completed Section -->
-    <div class="mt-8 px-2">
+    <div class="mt-8 px-2" *ngIf="completedTasks().length > 0">
       <div
+        (click)="isCompletedExpanded.set(!isCompletedExpanded())"
         class="flex items-center gap-2 py-2 text-gray-400 cursor-pointer hover:text-gray-600 transition-colors group">
-        <svg viewBox="0 0 24 24" class="w-4 h-4 transition-transform group-hover:rotate-0 -rotate-90" fill="none"
+        <svg viewBox="0 0 24 24" class="w-4 h-4 transition-transform group-hover:text-gray-600" [class.-rotate-90]="!isCompletedExpanded()" fill="none"
           stroke="currentColor" stroke-width="3">
           <polyline points="6 9 12 15 18 9" />
         </svg>
@@ -283,6 +301,7 @@
       </div>
 
       <!-- Completed Items -->
+      <div class="space-y-0.5 mt-1 transition-all" [class.hidden]="!isCompletedExpanded()">
       @for (task of completedTasks(); track task.id) {
         <div
           (click)="tasksStore.selectTask(task.id)"
@@ -304,7 +323,9 @@
         </div>
       }
 
-      <button class="mt-4 px-2 text-gray-400 text-xs font-bold hover:text-gray-600 transition-colors">
+      </div>
+
+      <button *ngIf="isCompletedExpanded()" class="mt-4 px-2 text-gray-400 text-xs font-bold hover:text-gray-600 transition-colors">
         View more
       </button>
     </div>

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TasksStore } from '../state/tasks.store';
@@ -23,6 +23,79 @@ export class TaskListComponent {
 
   isInputFocused = signal(false);
   hasExplicitSelection = signal(false);
+  isCompletedExpanded = signal(true);
+  expandedGroups = signal<Record<string, boolean>>({});
+
+  toggleGroup(groupId: string) {
+    this.expandedGroups.update(groups => ({
+      ...groups,
+      [groupId]: groups[groupId] === undefined ? false : !groups[groupId]
+    }));
+  }
+
+  isGroupExpanded(groupId: string): boolean {
+    const val = this.expandedGroups()[groupId];
+    return val === undefined ? true : val;
+  }
+
+  groupedActiveTasks = computed(() => {
+    const tasks = this.activeTasks();
+    const groupsMap = new Map<string, { id: string; title: string; tasks: Task[] }>();
+    
+    const addGroup = (id: string, title: string) => {
+        if (!groupsMap.has(id)) {
+            groupsMap.set(id, { id, title, tasks: [] });
+        }
+    };
+    
+    const sortedTasks = [...tasks].sort((a, b) => {
+      if (!a.dueDate) return 1;
+      if (!b.dueDate) return -1;
+      return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+    });
+
+    sortedTasks.forEach(task => {
+        if (!task.dueDate) {
+          addGroup('nodate', 'No Date');
+          groupsMap.get('nodate')!.tasks.push(task);
+          return;
+        }
+
+        const taskDate = new Date(task.dueDate);
+        taskDate.setHours(0,0,0,0);
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        
+        const diffDays = Math.round((taskDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        
+        if (diffDays < 0) {
+            addGroup('overdue', 'Overdue');
+            groupsMap.get('overdue')!.tasks.push(task);
+        } else if (diffDays === 0) {
+            const dayName = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(today);
+            addGroup('today', `${dayName}, Today`);
+            groupsMap.get('today')!.tasks.push(task);
+        } else if (diffDays === 1) {
+            const dayName = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(taskDate);
+            addGroup('tomorrow', `${dayName}, Tomorrow`);
+            groupsMap.get('tomorrow')!.tasks.push(task);
+        } else {
+            const dayName = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(taskDate);
+            const dateStr = taskDate.toLocaleString('en-US', { month: 'short', day: 'numeric' });
+            addGroup('future', `${dayName}, ${dateStr}`);
+            groupsMap.get('future')!.tasks.push(task);
+        }
+    });
+
+    const order = ['overdue', 'today', 'tomorrow', 'future', 'nodate'];
+    return Array.from(groupsMap.values()).sort((a, b) => {
+      let indexA = order.indexOf(a.id);
+      let indexB = order.indexOf(b.id);
+      if (indexA === -1) indexA = 99;
+      if (indexB === -1) indexB = 99;
+      return indexA - indexB;
+    });
+  });
 
   // Picker view state
   pickerView = signal<'date' | 'time'>('date');
