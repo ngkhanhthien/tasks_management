@@ -83,151 +83,16 @@
         </button>
       }
 
-      <!-- DatePicker Popover Dropdown (Static UI for testing) -->
+      <!-- DatePicker Popover -->
       @if (showDatePicker) {
-        <div class="absolute right-0 top-[calc(100%+8px)] w-[300px] bg-white rounded-2xl shadow-[0_10px_40px_-5px_rgba(0,0,0,0.15)] border border-gray-100 z-50 p-4 flex flex-col gap-4 origin-top-right">
-          
-          <!-- Top Tabs -->
-          <div class="bg-gray-100/80 p-0.5 rounded-lg flex text-xs font-semibold text-gray-500">
-            <button class="flex-1 bg-white text-gray-800 shadow-sm rounded-md py-1.5 transition-colors border border-gray-200/50">Date</button>
-            <button class="flex-1 hover:text-gray-700 py-1.5 rounded-md transition-colors">Duration</button>
-          </div>
-
-          @if (pickerView() === 'date') {
-            <!-- Quick Actions -->
-            <div class="flex justify-between items-center px-3">
-              <button class="text-gray-400 hover:text-gray-700 transition">
-                <svg class="w-[22px] h-[22px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-              </button>
-              <button class="text-gray-400 hover:text-gray-700 transition">
-                <svg class="w-[22px] h-[22px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-              </button>
-              <button class="text-gray-400 hover:text-gray-700 transition">
-                <svg class="w-[22px] h-[22px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="3.5" ry="3.5" /><path d="M16 2v4M8 2v4M3 10h18"/><text x="12" y="17" text-anchor="middle" font-size="7.5" font-weight="bold" fill="currentColor">+7</text></svg>
-              </button>
-              <button class="text-gray-400 hover:text-gray-700 transition">
-                <svg class="w-[22px] h-[22px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
-              </button>
-            </div>
-
-            <!-- Calendar Header -->
-            <div class="flex justify-between items-center text-gray-800 px-1 mt-1">
-              <span class="text-[14px] font-semibold tracking-tight">{{ currentMonthStr() }} 2026</span>
-              <div class="flex gap-2">
-                <button class="text-gray-400 hover:text-gray-600"><svg class="w-[14px] h-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg></button>
-                <button class="text-gray-400 hover:text-gray-600"><svg class="w-[14px] h-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="12" cy="12" r="8"/></svg></button>
-                <button class="text-gray-400 hover:text-gray-600"><svg class="w-[14px] h-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" /></svg></button>
-              </div>
-            </div>
-
-            <!-- Calendar Grid -->
-            <div class="text-[13px] px-1">
-              <div class="grid grid-cols-7 text-center text-gray-400 font-semibold mb-3 scale-90">
-                <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
-              </div>
-              <div class="grid grid-cols-7 text-center text-gray-700 gap-y-3 font-medium">
-                <span class="opacity-30">31</span>
-                @for (day of currentMonthDays(); track day) {
-                  <span 
-                    (click)="selectDate(day)"
-                    class="cursor-pointer rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto"
-                    [class.bg-[#ff6b6b]]="tempSelectedDate()?.getDate() === day"
-                    [class.text-white]="tempSelectedDate()?.getDate() === day"
-                    [class.font-bold]="tempSelectedDate()?.getDate() === day"
-                    [class.shadow-sm]="tempSelectedDate()?.getDate() === day"
-                    [class.shadow-red-200]="tempSelectedDate()?.getDate() === day"
-                    [class.hover:bg-gray-100]="tempSelectedDate()?.getDate() !== day">
-                    {{ day }}
-                  </span>
-                }
-              </div>
-            </div>
-          } @else if (pickerView() === 'time') {
-            <!-- Time Selection Header Icons -->
-            <div class="flex justify-between items-center px-4 pt-1 pb-2 border-b border-gray-50/50">
-              <button class="text-gray-400 hover:text-[#ff6b6b] transition">
-                <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M17.66 6.34l1.42-1.42"/></svg>
-              </button>
-              <button class="text-gray-400 hover:text-[#ff6b6b] transition">
-                <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v10m0 0l-3-3m3 3l3-3"/><path d="M5 20h14" stroke-width="2.5"/></svg>
-              </button>
-              <button class="text-[#ff6b6b] transition">
-                <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 10h18"/><path d="M8 2v4m8-4v4"/><text x="12" y="17" text-anchor="middle" font-size="7" font-weight="bold" fill="currentColor">+7</text></svg>
-              </button>
-              <button class="text-gray-400 hover:text-[#ff6b6b] transition">
-                <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-              </button>
-            </div>
-
-            <!-- Time Selection List -->
-            <div class="h-[200px] overflow-y-auto px-1 custom-scrollbar">
-              <div class="flex flex-col gap-1">
-                @for (time of times(); track time) {
-                  <button 
-                    (click)="selectTime(time)"
-                    class="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-gray-50 group transition-colors text-[14px]">
-                    <span [class.text-[#ff6b6b]]="selectedTime() === time" [class.font-semibold]="selectedTime() === time" class="text-gray-700">{{ time }}</span>
-                    @if (selectedTime() === time) {
-                      <svg viewBox="0 0 24 24" class="w-4 h-4 text-[#ff6b6b]" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12" /></svg>
-                    }
-                  </button>
-                }
-              </div>
-            </div>
-
-            <!-- Timezone Selector -->
-            <div class="px-1 mt-1">
-              <button class="w-full flex items-center justify-between px-4 py-2 bg-gray-50/50 border border-gray-100 rounded-xl text-[13px] text-gray-600 hover:bg-gray-100/50 transition-colors">
-                <span>Bangkok, GMT+7</span>
-                <svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9" /></svg>
-              </button>
-            </div>
-          }
-          
-          <hr class="border-gray-50 my-1"/>
-
-          <!-- List Options -->
-          <div class="flex flex-col text-[14px] font-medium text-gray-600">
-            <div class="flex items-center justify-between px-2 py-2 hover:bg-gray-50 rounded-lg group cursor-pointer" (click)="showTimeView()">
-              <div class="flex items-center gap-3">
-                <svg class="w-[18px] h-[18px] text-gray-400 group-hover:text-gray-600" [class.text-[#ff6b6b]]="selectedTime()" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                @if (selectedTime()) {
-                  <span class="text-[#ff6b6b] bg-[#ff6b6b]/10 px-2 py-0.5 rounded-md font-bold">{{ selectedTime() }}</span>
-                } @else {
-                  <span class="group-hover:text-gray-800 transition-colors">Time</span>
-                }
-              </div>
-              <div class="flex items-center gap-2">
-                @if (selectedTime()) {
-                  <button (click)="$event.stopPropagation(); removeTime()" class="p-1 hover:bg-gray-200 rounded-md transition-colors text-gray-400">
-                    <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                  </button>
-                }
-                <svg class="w-3.5 h-3.5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M9 18l6-6-6-6" /></svg>
-              </div>
-            </div>
-            <button class="flex items-center justify-between px-2 py-2 hover:bg-gray-50 rounded-lg group">
-              <div class="flex items-center gap-3">
-                <svg class="w-[18px] h-[18px] text-gray-400 group-hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2"><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M18.63 13A17.89 17.89 0 0 1 18 8"/><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M18 8a6 6 0 0 0-9.33-5"/></svg>
-                <span class="group-hover:text-gray-800 transition-colors">On time</span>
-              </div>
-              <svg class="w-3.5 h-3.5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M9 18l6-6-6-6" /></svg>
-            </button>
-            <button class="flex items-center justify-between px-2 py-2 hover:bg-gray-50 rounded-lg group">
-              <div class="flex items-center gap-3">
-                <svg class="w-[18px] h-[18px] text-gray-400 group-hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-                <span class="group-hover:text-gray-800 transition-colors">Repeat</span>
-              </div>
-              <svg class="w-3.5 h-3.5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M9 18l6-6-6-6" /></svg>
-            </button>
-          </div>
-
-          <!-- Buttons -->
-          <div class="flex gap-3 justify-end mt-2">
-            <button (click)="clearDate()" class="flex-1 px-4 py-2 text-sm font-semibold text-gray-500 hover:bg-gray-50 border border-gray-200 rounded-lg transition-colors">Clear</button>
-            <button (click)="confirmDate()" class="flex-1 px-4 py-2 text-sm font-semibold text-white bg-[#ff6b6b] hover:bg-[#ff5252] shadow-sm rounded-lg transition-colors">OK</button>
-          </div>
-        </div>
+        <app-date-picker 
+          class="absolute right-0 top-[calc(100%+8px)] z-50"
+          [initialDate]="selectedDate()"
+          [initialTime]="selectedTime()"
+          (confirmed)="onNewTaskDateConfirmed($event)"
+          (cleared)="onDatePickerCleared()"
+          (canceled)="onDatePickerCanceled()">
+        </app-date-picker>
       }
     </div>
   </div>
@@ -262,16 +127,31 @@
                   <span class="text-gray-700 font-medium">{{ task.title }}</span>
                 </div>
                 <div class="flex items-center gap-3 transition-all" [class.opacity-100]="!!task.dueDate" [class.opacity-0]="!task.dueDate" [class.group-hover:opacity-100]="!task.dueDate">
-                  @if (task.dueDate) {
-                    <span class="text-[11px] font-semibold flex items-center gap-1"
-                          [class.text-[#ff6b6b]]="isOverdue(task.dueDate)"
-                          [class.text-blue-500]="!isOverdue(task.dueDate)">
-                      <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
-                      {{ formatTaskDate(task.dueDate) }}{{ task.dueTime ? ', ' + task.dueTime : '' }}
-                    </span>
-                  } @else {
-                    <span class="text-gray-400 text-[11px] font-semibold">No Date</span>
-                  }
+                  <div class="relative">
+                    @if (task.dueDate) {
+                      <span (click)="editTaskDate(task.id, $event)"
+                            class="text-[11px] font-semibold flex items-center gap-1 hover:bg-gray-200/50 px-1.5 py-0.5 rounded transition-colors"
+                            [class.text-[#ff6b6b]]="isOverdue(task.dueDate)"
+                            [class.text-blue-500]="!isOverdue(task.dueDate)">
+                        <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
+                        {{ formatTaskDate(task.dueDate) }}{{ task.dueTime ? ', ' + task.dueTime : '' }}
+                      </span>
+                    } @else {
+                      <span (click)="editTaskDate(task.id, $event)" 
+                            class="text-gray-400 text-[11px] font-semibold hover:bg-gray-200/50 px-1.5 py-0.5 rounded transition-colors">No Date</span>
+                    }
+
+                    @if (editingTaskId() === task.id) {
+                      <app-date-picker 
+                        [isModal]="true"
+                        [initialDate]="task.dueDate"
+                        [initialTime]="task.dueTime"
+                        (confirmed)="onTaskDateConfirmed(task.id, $event)"
+                        (cleared)="onTaskDateConfirmed(task.id, { date: null, time: null })"
+                        (canceled)="onDatePickerCanceled()">
+                      </app-date-picker>
+                    }
+                  </div>
                   <button class="text-gray-200 hover:text-gray-400 ml-1">
                     <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3">
                       <circle cx="12" cy="12" r="1" />

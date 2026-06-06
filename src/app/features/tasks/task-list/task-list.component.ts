@@ -4,10 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { TasksStore } from '../state/tasks.store';
 import { Task } from '../models/task.model';
 
+import { DatePickerComponent } from '../../../shared/ui/date-picker/date-picker.component';
+
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DatePickerComponent],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.css'
 })
@@ -25,6 +27,7 @@ export class TaskListComponent {
   hasExplicitSelection = signal(false);
   isCompletedExpanded = signal(true);
   expandedGroups = signal<Record<string, boolean>>({});
+  editingTaskId = signal<string | null>(null);
 
   toggleGroup(groupId: string) {
     this.expandedGroups.update(groups => ({
@@ -136,28 +139,37 @@ export class TaskListComponent {
   // Date picker actions
   openDatePicker() {
     this.showDatePicker = !this.showDatePicker;
-    if (this.showDatePicker) {
-      this.tempSelectedDate.set(this.selectedDate());
-      this.pickerView.set('date');
-    }
   }
 
-  showTimeView() {
-    this.pickerView.set('time');
-  }
-
-  hideTimeView() {
-    this.pickerView.set('date');
-  }
-
-  selectTime(time: string) {
-    this.selectedTime.set(time);
+  onNewTaskDateConfirmed(result: { date: Date | null, time: string | null }) {
+    this.selectedDate.set(result.date);
+    this.selectedTime.set(result.time);
     this.hasExplicitSelection.set(true);
-    this.pickerView.set('date');
+    this.showDatePicker = false;
   }
 
-  removeTime() {
+  onTaskDateConfirmed(taskId: string, result: { date: Date | null, time: string | null }) {
+    this.tasksStore.updateTask(taskId, {
+      dueDate: result.date || undefined,
+      dueTime: result.time || undefined
+    });
+    this.editingTaskId.set(null);
+  }
+
+  onDatePickerCleared() {
+    this.selectedDate.set(null);
     this.selectedTime.set(null);
+    this.showDatePicker = false;
+  }
+
+  onDatePickerCanceled() {
+    this.showDatePicker = false;
+    this.editingTaskId.set(null);
+  }
+
+  editTaskDate(taskId: string, event: MouseEvent) {
+    event.stopPropagation();
+    this.editingTaskId.set(taskId);
   }
 
   getFormattedDate(date: Date | null): string {
@@ -165,24 +177,6 @@ export class TaskListComponent {
     if (!this.hasExplicitSelection()) return 'Today';
     
     return date.toLocaleString('en-US', { month: 'short', day: 'numeric' });
-  }
-
-  selectDate(day: number) {
-    const d = new Date();
-    d.setDate(day);
-    this.tempSelectedDate.set(d);
-  }
-
-  confirmDate() {
-    this.selectedDate.set(this.tempSelectedDate());
-    this.hasExplicitSelection.set(true);
-    this.showDatePicker = false;
-  }
-
-  clearDate() {
-    this.selectedDate.set(null);
-    this.tempSelectedDate.set(null);
-    this.showDatePicker = false;
   }
 
   isOverdue(date: Date | string | undefined): boolean {
