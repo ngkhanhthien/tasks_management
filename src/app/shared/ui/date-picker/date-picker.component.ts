@@ -1,4 +1,4 @@
-import { Component, signal, input, output, effect } from '@angular/core';
+import { Component, signal, input, output, effect, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -24,10 +24,36 @@ export class DatePickerComponent {
   selectedTime = signal<string | null>(null);
   selectedDate = signal<Date | null>(null);
   tempSelectedDate = signal<Date | null>(null);
+  viewDate = signal<Date>(new Date());
 
-  // UI State
-  currentMonthStr = signal<string>(new Date().toLocaleString('en-US', { month: 'short' }));
-  currentMonthDays = signal<number[]>(Array.from({ length: 30 }, (_, i) => i + 1));
+  // Computed State
+  currentMonthStr = computed(() => {
+    return this.viewDate().toLocaleString('en-US', { month: 'short', year: 'numeric' });
+  });
+
+  calendarDays = computed(() => {
+    const view = this.viewDate();
+    const year = view.getFullYear();
+    const month = view.getMonth();
+
+    const firstDayOfMonth = new Date(year, month, 1);
+    const startDay = new Date(firstDayOfMonth);
+    startDay.setDate(1 - firstDayOfMonth.getDay());
+
+    const days = [];
+    for (let i = 0; i < 42; i++) {
+      const d = new Date(startDay);
+      d.setDate(startDay.getDate() + i);
+      days.push({
+        date: d,
+        dayNum: d.getDate(),
+        isCurrentMonth: d.getMonth() === month,
+        isToday: this.isSameDay(d, new Date()),
+        isSelected: this.tempSelectedDate() ? this.isSameDay(d, this.tempSelectedDate()!) : false
+      });
+    }
+    return days;
+  });
   times = signal<string[]>([
     '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
     '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30',
@@ -39,11 +65,14 @@ export class DatePickerComponent {
     effect(() => {
       const date = this.initialDate();
       if (date) {
-        this.selectedDate.set(new Date(date));
-        this.tempSelectedDate.set(new Date(date));
+        const d = new Date(date);
+        this.selectedDate.set(d);
+        this.tempSelectedDate.set(d);
+        this.viewDate.set(new Date(d.getFullYear(), d.getMonth(), 1));
       } else {
         this.selectedDate.set(null);
         this.tempSelectedDate.set(null);
+        this.viewDate.set(new Date());
       }
     });
 
@@ -65,10 +94,28 @@ export class DatePickerComponent {
     this.selectedTime.set(null);
   }
 
-  selectDate(day: number) {
-    const d = new Date();
-    d.setDate(day);
-    this.tempSelectedDate.set(d);
+  prevMonth() {
+    const current = this.viewDate();
+    this.viewDate.set(new Date(current.getFullYear(), current.getMonth() - 1, 1));
+  }
+
+  nextMonth() {
+    const current = this.viewDate();
+    this.viewDate.set(new Date(current.getFullYear(), current.getMonth() + 1, 1));
+  }
+
+  goToToday() {
+    this.viewDate.set(new Date());
+  }
+
+  selectDate(date: Date) {
+    this.tempSelectedDate.set(new Date(date));
+  }
+
+  isSameDay(d1: Date, d2: Date): boolean {
+    return d1.getFullYear() === d2.getFullYear() &&
+           d1.getMonth() === d2.getMonth() &&
+           d1.getDate() === d2.getDate();
   }
 
   confirmDate() {

@@ -31,11 +31,11 @@
 
       <!-- Calendar Header -->
       <div class="flex justify-between items-center text-gray-800 px-1 mt-1">
-        <span class="text-[14px] font-semibold tracking-tight">{{ currentMonthStr() }} 2026</span>
+        <span class="text-[14px] font-semibold tracking-tight">{{ currentMonthStr() }}</span>
         <div class="flex gap-2">
-          <button class="text-gray-400 hover:text-gray-600"><svg class="w-[14px] h-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg></button>
-          <button class="text-gray-400 hover:text-gray-600"><svg class="w-[14px] h-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="12" cy="12" r="8"/></svg></button>
-          <button class="text-gray-400 hover:text-gray-600"><svg class="w-[14px] h-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" /></svg></button>
+          <button (click)="prevMonth()" class="text-gray-400 hover:text-gray-600 p-1 hover:bg-gray-100 rounded-md transition-colors"><svg class="w-[14px] h-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg></button>
+          <button (click)="goToToday()" class="text-gray-400 hover:text-gray-600 p-1 hover:bg-gray-100 rounded-md transition-colors"><svg class="w-[14px] h-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="12" cy="12" r="8"/></svg></button>
+          <button (click)="nextMonth()" class="text-gray-400 hover:text-gray-600 p-1 hover:bg-gray-100 rounded-md transition-colors"><svg class="w-[14px] h-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" /></svg></button>
         </div>
       </div>
 
@@ -44,19 +44,20 @@
         <div class="grid grid-cols-7 text-center text-gray-400 font-semibold mb-3 scale-90">
           <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
         </div>
-        <div class="grid grid-cols-7 text-center text-gray-700 gap-y-3 font-medium">
-          <span class="opacity-30">31</span>
-          @for (day of currentMonthDays(); track day) {
+        <div class="grid grid-cols-7 text-center text-gray-700 gap-y-2 font-medium">
+          @for (day of calendarDays(); track day.date.getTime()) {
             <span 
-              (click)="selectDate(day)"
-              class="cursor-pointer rounded-full w-[26px] h-[26px] flex items-center justify-center mx-auto"
-              [class.bg-[#ff6b6b]]="tempSelectedDate()?.getDate() === day"
-              [class.text-white]="tempSelectedDate()?.getDate() === day"
-              [class.font-bold]="tempSelectedDate()?.getDate() === day"
-              [class.shadow-sm]="tempSelectedDate()?.getDate() === day"
-              [class.shadow-red-200]="tempSelectedDate()?.getDate() === day"
-              [class.hover:bg-gray-100]="tempSelectedDate()?.getDate() !== day">
-              {{ day }}
+              (click)="selectDate(day.date)"
+              class="cursor-pointer rounded-full w-[28px] h-[28px] flex items-center justify-center mx-auto text-[13px] transition-all"
+              [class.opacity-30]="!day.isCurrentMonth"
+              [class.bg-[#ff6b6b]]="day.isSelected"
+              [class.text-white]="day.isSelected"
+              [class.font-bold]="day.isSelected"
+              [class.ring-1]="day.isToday && !day.isSelected"
+              [class.ring-[#ff6b6b]]="day.isToday && !day.isSelected"
+              [class.text-[#ff6b6b]]="day.isToday && !day.isSelected"
+              [class.hover:bg-gray-100]="!day.isSelected">
+              {{ day.dayNum }}
             </span>
           }
         </div>
