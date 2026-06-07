@@ -7,32 +7,36 @@
        (click)="$event.stopPropagation()">
     
     <!-- Date Quick Selection Section -->
-    <div class="px-3 pt-3 pb-2 border-b border-gray-50 mb-1">
-      <div class="text-[11px] font-medium text-gray-400 mb-2 px-1">Date</div>
-      <div class="flex items-center justify-between">
-        <button *ngFor="let date of quickDates" 
-                (click)="selectDate(date.id)" 
-                class="w-[36px] h-[36px] flex items-center justify-center hover:bg-gray-50 rounded-[8px] transition-colors group"
-                [title]="date.label">
-          <ng-container [ngSwitch]="date.icon">
-            <!-- Today (Sun) -->
-            <svg *ngSwitchCase="'sun'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-            <!-- Tomorrow (Sun Ray) -->
-            <svg *ngSwitchCase="'sun-ray'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 7V3M5 9 2 6M5 15l-3 3M12 17v4M19 15l3 3M19 9l3-3M7 12a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z"/></svg>
-            <!-- Next 7 Days (Calendar Arrow) -->
-            <svg *ngSwitchCase="'calendar-arrow'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"/><path d="m16 2 5 5-5 5"/><path d="M21 7H9a5 5 0 0 0-5 5"/></svg>
-            <!-- Calendar (Grid) -->
-            <svg *ngSwitchCase="'calendar-grid'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 10h18"/><path d="M8 2v4m8-4v4"/><path d="M7 14h.01M12 14h.01M17 14h.01M7 18h.01M12 18h.01M17 18h.01"/></svg>
-            <!-- Clear (Calendar X) -->
-            <svg *ngSwitchCase="'calendar-x'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-400" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 2v4m8-4v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM9 16l6-6M15 16l-6-6"/></svg>
-          </ng-container>
-        </button>
+    @if (type() === 'edit') {
+      <div class="px-3 pt-3 pb-2 border-b border-gray-50 mb-1">
+        <div class="text-[11px] font-medium text-gray-400 mb-2 px-1">Date</div>
+        <div class="flex items-center justify-between">
+          <button *ngFor="let date of quickDates" 
+                  (click)="selectDate(date.id)" 
+                  class="w-[36px] h-[36px] flex items-center justify-center hover:bg-gray-50 rounded-[8px] transition-colors group"
+                  [title]="date.label">
+            <ng-container [ngSwitch]="date.icon">
+              <!-- Today (Sun) -->
+              <svg *ngSwitchCase="'sun'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+              <!-- Tomorrow (Sun Ray) -->
+              <svg *ngSwitchCase="'sun-ray'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 7V3M5 9 2 6M5 15l-3 3M12 17v4M19 15l3 3M19 9l3-3M7 12a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z"/></svg>
+              <!-- Next 7 Days (Calendar Arrow) -->
+              <svg *ngSwitchCase="'calendar-arrow'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"/><path d="m16 2 5 5-5 5"/><path d="M21 7H9a5 5 0 0 0-5 5"/></svg>
+              <!-- Calendar (Grid) -->
+              <svg *ngSwitchCase="'calendar-grid'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 10h18"/><path d="M8 2v4m8-4v4"/><path d="M7 14h.01M12 14h.01M17 14h.01M7 18h.01M12 18h.01M17 18h.01"/></svg>
+              <!-- Clear (Calendar X) -->
+              <svg *ngSwitchCase="'calendar-x'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-400" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 2v4m8-4v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM9 16l6-6M15 16l-6-6"/></svg>
+            </ng-container>
+          </button>
+        </div>
       </div>
-    </div>
+    }
 
     <!-- Priority Section -->
     <div class="px-3 py-2 border-b border-gray-50 mb-1">
-      <div class="text-[11px] font-medium text-gray-400 mb-2 px-1">Priority</div>
+      @if (type() === 'edit') {
+        <div class="text-[11px] font-medium text-gray-400 mb-2 px-1">Priority</div>
+      }
       <div class="flex items-center justify-between">
         <button *ngFor="let p of priorities" 
                 (click)="selectPriority(p.level)" 
@@ -46,7 +50,7 @@
     </div>
 
     <!-- Actions Section -->
-    <div *ngFor="let group of actionGroups; let last = last">
+    <div *ngFor="let group of filteredActionGroups; let last = last">
       <div class="py-1">
         <button *ngFor="let item of group.items" 
                 (click)="selectAction(item.id)" 
@@ -54,19 +58,26 @@
           <div class="flex items-center gap-3">
             <!-- Icon Containers -->
             <ng-container [ngSwitch]="item.icon">
+              <!-- Edit Mode Icons -->
               <svg *ngSwitchCase="'list-plus'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 12H3m14 0h-2m2 0V5m0 7v7M3 6h7M3 18h7"/></svg>
               <svg *ngSwitchCase="'link'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
               <svg *ngSwitchCase="'pin'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v8l4 2v6h-4v4h-2v-4h-4v-6l4-2V2Z"/></svg>
               <svg *ngSwitchCase="'circle-x'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg>
               <svg *ngSwitchCase="'folder-arrow'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2Z"/><path d="m12 11 3 3-3 3m-4-3h7"/></svg>
-              <svg *ngSwitchCase="'tag'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2H2v10l9.28 9.29a2.11 2.11 0 0 0 2.98 0l6.45-6.45a2.11 2.11 0 0 0 0-2.98Z"/><path d="M6 6h.01"/></svg>
               <svg *ngSwitchCase="'target'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
               <svg *ngSwitchCase="'copy'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
               <svg *ngSwitchCase="'link-chain'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
               <svg *ngSwitchCase="'document'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
               <svg *ngSwitchCase="'trash'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-400 group-hover:text-red-500 transition-colors" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+              
+              <!-- Shared & Add Mode Icons -->
+              <svg *ngSwitchCase="'tag'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2H2v10l9.28 9.29a2.11 2.11 0 0 0 2.98 0l6.45-6.45a2.11 2.11 0 0 0 0-2.98Z"/><path d="M6 6h.01"/></svg>
+              <svg *ngSwitchCase="'list'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+              <svg *ngSwitchCase="'attachment'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.51a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+              <svg *ngSwitchCase="'template'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M9 3v18M3 9h6M3 15h6M21 9h-6M21 15h-6"/></svg>
+              <svg *ngSwitchCase="'settings'" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             </ng-container>
-            <span class="text-[13px] text-gray-700" [class.group-hover:text-red-500]="item.isDestructive">{{item.label}}</span>
+            <span class="text-[13px] text-gray-700" [class.hover:text-red-500]="item.isDestructive">{{item.label}}</span>
           </div>
           <svg *ngIf="item.hasSubmenu" viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
         </button>
@@ -75,12 +86,14 @@
     </div>
 
     <!-- Footer Bar -->
-    <div class="px-3 py-2 bg-gray-50 border-t border-gray-50 flex items-center justify-between">
-      <div class="flex items-center gap-1.5 opacity-60">
-        <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-blue-500 fill-blue-500"><circle cx="12" cy="12" r="10"/></svg>
-        <span class="text-[11px] font-medium text-gray-500 uppercase tracking-tight">Inbox Jul 8</span>
+    @if (type() === 'edit') {
+      <div class="px-3 py-2 bg-gray-50 border-t border-gray-50 flex items-center justify-between">
+        <div class="flex items-center gap-1.5 opacity-60">
+          <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-blue-500 fill-blue-500"><circle cx="12" cy="12" r="10"/></svg>
+          <span class="text-[11px] font-medium text-gray-500 uppercase tracking-tight">Inbox Jul 8</span>
+        </div>
+        <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gray-400"><path d="M12 20h.01M12 16h.01M12 12h.01M12 8h.01M12 4h.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
       </div>
-      <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gray-400"><path d="M12 20h.01M12 16h.01M12 12h.01M12 8h.01M12 4h.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
-    </div>
+    }
   </div>
 </div>

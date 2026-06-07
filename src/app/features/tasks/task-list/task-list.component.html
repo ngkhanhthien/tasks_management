@@ -108,6 +108,7 @@
       @if (showTaskMenu()) {
         <app-task-menu 
           class="absolute right-0 top-[calc(100%+8px)] z-[110]"
+          type="add"
           (actionClicked)="showTaskMenu.set(false)">
         </app-task-menu>
       }

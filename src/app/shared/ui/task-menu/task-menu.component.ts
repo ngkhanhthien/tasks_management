@@ -12,6 +12,7 @@ import { Priority } from '../../../features/tasks/models/task.model';
 export class TaskMenuComponent {
   // Inputs
   isModal = input<boolean>(false);
+  type = input<'edit' | 'add'>('edit');
 
   // Outputs
   prioritySelected = output<Priority>();
@@ -34,7 +35,7 @@ export class TaskMenuComponent {
     { level: 0, color: 'text-gray-300', fill: 'none', bg: 'hover:bg-gray-50' }
   ];
 
-  actionGroups: {
+  get filteredActionGroups(): {
     items: {
       id: string;
       label: string;
@@ -42,31 +43,51 @@ export class TaskMenuComponent {
       hasSubmenu?: boolean;
       isDestructive?: boolean;
     }[];
-  }[] = [
-    {
-      items: [
-        { id: 'add-subtask', label: 'Add Subtask', icon: 'list-plus' },
-        { id: 'link-parent', label: 'Link Parent Task', icon: 'link' },
-        { id: 'pin', label: 'Pin', icon: 'pin' },
-        { id: 'wont-do', label: 'Won\'t Do', icon: 'circle-x' }
-      ]
-    },
-    {
-      items: [
-        { id: 'move-to', label: 'Move to', icon: 'folder-arrow', hasSubmenu: true },
-        { id: 'tags', label: 'Tags', icon: 'tag' },
-        { id: 'start-focus', label: 'Start Focus', icon: 'target', hasSubmenu: true }
-      ]
-    },
-    {
-      items: [
-        { id: 'duplicate', label: 'Duplicate', icon: 'copy' },
-        { id: 'copy-link', label: 'Copy Link', icon: 'link-chain' },
-        { id: 'convert-note', label: 'Convert to Note', icon: 'document' },
-        { id: 'delete', label: 'Delete', icon: 'trash', isDestructive: true }
-      ]
+  }[] {
+    if (this.type() === 'add') {
+      return [
+        {
+          items: [
+            { id: 'list', label: 'everyday', icon: 'list', hasSubmenu: true },
+            { id: 'tags', label: 'Tags', icon: 'tag' },
+            { id: 'attachment', label: 'Attachment', icon: 'attachment' },
+            { id: 'template', label: 'Add from Template', icon: 'template' }
+          ]
+        },
+        {
+          items: [
+            { id: 'settings', label: 'Input Box Setting', icon: 'settings' }
+          ]
+        }
+      ];
     }
-  ];
+
+    return [
+      {
+        items: [
+          { id: 'add-subtask', label: 'Add Subtask', icon: 'list-plus' },
+          { id: 'link-parent', label: 'Link Parent Task', icon: 'link' },
+          { id: 'pin', label: 'Pin', icon: 'pin' },
+          { id: 'wont-do', label: 'Won\'t Do', icon: 'circle-x' }
+        ]
+      },
+      {
+        items: [
+          { id: 'move-to', label: 'Move to', icon: 'folder-arrow', hasSubmenu: true },
+          { id: 'tags', label: 'Tags', icon: 'tag' },
+          { id: 'start-focus', label: 'Start Focus', icon: 'target', hasSubmenu: true }
+        ]
+      },
+      {
+        items: [
+          { id: 'duplicate', label: 'Duplicate', icon: 'copy' },
+          { id: 'copy-link', label: 'Copy Link', icon: 'link-chain' },
+          { id: 'convert-note', label: 'Convert to Note', icon: 'document' },
+          { id: 'delete', label: 'Delete', icon: 'trash', isDestructive: true }
+        ]
+      }
+    ];
+  }
 
   selectPriority(level: number) {
     const priorityMap: Record<number, Priority> = {
