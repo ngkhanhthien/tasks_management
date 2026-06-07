@@ -1,6 +1,7 @@
-import { Component, signal, output } from '@angular/core';
+import { Component, signal, output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TagsStore } from '../state/tags.store';
 
 @Component({
   selector: 'app-add-tag-modal',
@@ -10,6 +11,8 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './add-tag-modal.component.css'
 })
 export class AddTagModalComponent {
+  tagsStore = inject(TagsStore);
+  
   tagName = signal('');
   selectedColor = signal('#ff7043');
   parentTag = signal('None');

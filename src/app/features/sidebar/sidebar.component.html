@@ -240,9 +240,10 @@
           </button>
         </div>
 
-        <div [class.hidden]="!isTagsExpanded()" class="space-y-1">
-          @for (tag of tagsStore.tags(); track tag.id) {
-            <div class="flex items-center justify-between p-2 rounded-lg hover:bg-black/5 cursor-pointer text-[#555]">
+        <div [class.hidden]="!isTagsExpanded()" class="space-y-0.5">
+          @for (tag of tagsStore.rootTags(); track tag.id) {
+            <!-- Parent Tag -->
+            <div class="flex items-center justify-between p-2 rounded-lg hover:bg-black/5 cursor-pointer text-[#555] group/tag">
               <div class="flex items-center gap-3">
                 <svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
                   stroke-width="2.5">
@@ -252,6 +253,20 @@
               </div>
               <span class="w-2 h-2 rounded-full" [style.backgroundColor]="tag.color"></span>
             </div>
+
+            <!-- Child Tags -->
+            @for (child of tagsStore.getChildren(tag.id); track child.id) {
+              <div class="flex items-center justify-between p-2 pl-9 rounded-lg hover:bg-black/5 cursor-pointer text-[#555]">
+                <div class="flex items-center gap-3">
+                  <svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
+                    stroke-width="2.5">
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82zM7 7h.01" />
+                  </svg>
+                  <span class="text-sm">{{ child.name }}</span>
+                </div>
+                <span class="w-2 h-2 rounded-full" [style.backgroundColor]="child.color"></span>
+              </div>
+            }
           }
         </div>
       </div>

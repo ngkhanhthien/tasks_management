@@ -73,7 +73,10 @@
             (ngModelChange)="parentTag.set($event)"
             class="w-full px-4 py-2 bg-white border border-gray-100 rounded-xl focus:outline-none focus:ring-1 focus:ring-gray-200 transition-all text-[15px] appearance-none cursor-pointer text-[#444]"
           >
-            <option>None</option>
+            <option value="None">None</option>
+            @for (parent of tagsStore.rootTags(); track parent.id) {
+              <option [value]="parent.id">{{ parent.name }}</option>
+            }
           </select>
           <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none">
             <svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" stroke-width="2.5">
