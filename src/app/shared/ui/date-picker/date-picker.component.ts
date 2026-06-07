@@ -109,7 +109,36 @@ export class DatePickerComponent {
   }
 
   selectDate(date: Date) {
-    this.tempSelectedDate.set(new Date(date));
+    const d = new Date(date);
+    const existing = this.tempSelectedDate();
+    if (existing) {
+      d.setHours(existing.getHours(), existing.getMinutes(), existing.getSeconds(), existing.getMilliseconds());
+    }
+    this.tempSelectedDate.set(d);
+    // Update viewDate to the month of the selected date
+    this.viewDate.set(new Date(d.getFullYear(), d.getMonth(), 1));
+  }
+
+  quickSelect(type: 'today' | 'tomorrow' | 'next7days' | 'nextMonth') {
+    const target = new Date();
+    target.setHours(0, 0, 0, 0);
+
+    switch (type) {
+      case 'today':
+        // target is already today
+        break;
+      case 'tomorrow':
+        target.setDate(target.getDate() + 1);
+        break;
+      case 'next7days':
+        target.setDate(target.getDate() + 7);
+        break;
+      case 'nextMonth':
+        target.setMonth(target.getMonth() + 1);
+        break;
+    }
+    this.selectDate(target);
+    this.confirmDate();
   }
 
   isSameDay(d1: Date, d2: Date): boolean {
