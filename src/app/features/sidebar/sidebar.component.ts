@@ -4,11 +4,12 @@ import { NavigationService, AppType } from '../../core/services/navigation.servi
 import { TasksStore } from '../tasks/state/tasks.store';
 import { TagsStore } from '../tags/state/tags.store';
 import { AddTagModalComponent } from '../tags/add-tag-modal/add-tag-modal.component';
+import { TagContextMenuComponent } from '../../shared/ui/tag-context-menu/tag-context-menu.component';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, AddTagModalComponent],
+  imports: [CommonModule, AddTagModalComponent, TagContextMenuComponent],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
@@ -22,6 +23,9 @@ export class SidebarComponent {
   isFiltersExpanded = signal(true);
   isTagsExpanded = signal(true);
   showAddTagModal = signal(false);
+  
+  activeTagMenuId = signal<string | null>(null);
+  menuPosition = signal({ x: 0, y: 0 });
 
   toggleLists() { this.isListsExpanded.update(v => !v); }
   toggleFilters() { this.isFiltersExpanded.update(v => !v); }
@@ -29,6 +33,15 @@ export class SidebarComponent {
 
   setApp(app: AppType) {
     this.navService.setActiveApp(app);
+  }
+
+  openTagMenu(tagId: string, event: MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    // Ensure the menu doesn't go off-screen (basic)
+    this.menuPosition.set({ x: event.clientX, y: event.clientY });
+    this.activeTagMenuId.set(tagId);
   }
 
   onTagSave(tagData: { name: string; color: string; parent: string }) {

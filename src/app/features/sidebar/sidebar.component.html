@@ -251,12 +251,20 @@
                 </svg>
                 <span class="text-sm">{{ tag.name }}</span>
               </div>
-              <span class="w-2 h-2 rounded-full" [style.backgroundColor]="tag.color"></span>
+              <div class="flex items-center gap-2">
+                <button (click)="openTagMenu(tag.id, $event)" 
+                        class="opacity-0 group-hover/tag:opacity-100 hover:bg-black/5 p-0.5 rounded transition-all">
+                  <svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="3">
+                    <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
+                  </svg>
+                </button>
+                <span class="w-2 h-2 rounded-full" [style.backgroundColor]="tag.color"></span>
+              </div>
             </div>
 
             <!-- Child Tags -->
             @for (child of tagsStore.getChildren(tag.id); track child.id) {
-              <div class="flex items-center justify-between p-2 pl-9 rounded-lg hover:bg-black/5 cursor-pointer text-[#555]">
+              <div class="flex items-center justify-between p-2 pl-9 rounded-lg hover:bg-black/5 cursor-pointer text-[#555] group/tag">
                 <div class="flex items-center gap-3">
                   <svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
                     stroke-width="2.5">
@@ -264,7 +272,15 @@
                   </svg>
                   <span class="text-sm">{{ child.name }}</span>
                 </div>
-                <span class="w-2 h-2 rounded-full" [style.backgroundColor]="child.color"></span>
+                <div class="flex items-center gap-2">
+                  <button (click)="openTagMenu(child.id, $event)" 
+                          class="opacity-0 group-hover/tag:opacity-100 hover:bg-black/5 p-0.5 rounded transition-all">
+                    <svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="3">
+                      <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
+                    </svg>
+                  </button>
+                  <span class="w-2 h-2 rounded-full" [style.backgroundColor]="child.color"></span>
+                </div>
               </div>
             }
           }
@@ -290,4 +306,14 @@
     (close)="showAddTagModal.set(false)"
     (save)="onTagSave($event)">
   </app-add-tag-modal>
+}
+
+<!-- Tag Context Menu -->
+@if (activeTagMenuId()) {
+  <app-tag-context-menu
+    [x]="menuPosition().x"
+    [y]="menuPosition().y"
+    (close)="activeTagMenuId.set(null)"
+    (action)="activeTagMenuId.set(null)">
+  </app-tag-context-menu>
 }

@@ -1,0 +1,32 @@
+<div class="fixed inset-0 z-[9998]" (click)="close.emit()">
+  <div 
+    class="fixed z-[9999] bg-white rounded-2xl shadow-xl py-1.5 min-w-[160px] border border-gray-100 animate-in fade-in zoom-in-95 duration-100"
+    [style.top.px]="y()"
+    [style.left.px]="x()"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="flex flex-col">
+      <button (click)="onAction('edit')" class="w-full text-left px-4 py-1.5 hover:bg-gray-50/80 text-[13px] text-gray-700 transition-colors">
+        Edit
+      </button>
+      <button (click)="onAction('pin')" class="w-full text-left px-4 py-1.5 hover:bg-gray-50/80 text-[13px] text-gray-700 transition-colors">
+        Pin
+      </button>
+      <button (click)="onAction('add-subtag')" class="w-full text-left px-4 py-1.5 hover:bg-gray-50/80 text-[13px] text-gray-700 transition-colors border-b border-gray-50">
+        Add Sub-tag
+      </button>
+      <button (click)="onAction('merge')" class="w-full text-left px-4 py-1.5 hover:bg-gray-50/80 text-[13px] text-gray-700 transition-colors">
+        Merge Tags
+      </button>
+      <button (click)="onAction('move-shared')" class="w-full text-left px-4 py-1.5 hover:bg-gray-50/80 text-[13px] text-gray-700 transition-colors mb-1">
+        Move to Shared Tags
+      </button>
+      
+      <div class="border-t border-gray-50 my-0.5"></div>
+      
+      <button (click)="onAction('delete')" class="w-full text-left px-4 py-1.5 hover:bg-gray-50/80 text-[13px] text-red-500 transition-colors">
+        Delete
+      </button>
+    </div>
+  </div>
+</div>
