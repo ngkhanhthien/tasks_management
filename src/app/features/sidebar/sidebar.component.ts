@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationService, AppType } from '../../core/services/navigation.service';
 import { TasksStore } from '../tasks/state/tasks.store';
+import { TagsStore } from '../tags/state/tags.store';
 import { AddTagModalComponent } from '../tags/add-tag-modal/add-tag-modal.component';
 
 @Component({
@@ -14,6 +15,7 @@ import { AddTagModalComponent } from '../tags/add-tag-modal/add-tag-modal.compon
 export class SidebarComponent {
   navService = inject(NavigationService);
   tasksStore = inject(TasksStore);
+  tagsStore = inject(TagsStore);
 
   // Expansion states
   isListsExpanded = signal(true);
@@ -27,6 +29,15 @@ export class SidebarComponent {
 
   setApp(app: AppType) {
     this.navService.setActiveApp(app);
+  }
+
+  onTagSave(tagData: { name: string; color: string; parent: string }) {
+    this.tagsStore.addTag({
+      name: tagData.name,
+      color: tagData.color,
+      parentId: tagData.parent === 'None' ? undefined : tagData.parent
+    });
+    this.showAddTagModal.set(false);
   }
 }
 
