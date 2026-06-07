@@ -136,6 +136,7 @@
               <div
                 (click)="tasksStore.selectTask(task.id)"
                 [class.bg-blue-50]="tasksStore.selectedTaskId() === task.id"
+                [class.!bg-gray-200]="activeMenuTaskId() === task.id || editingTaskId() === task.id"
                 class="group flex items-center justify-between py-1.5 px-4 rounded-xl hover:bg-gray-100/30 cursor-pointer border-b border-gray-50/80 transition-all">
                 <div class="flex items-center gap-4">
                   <div
