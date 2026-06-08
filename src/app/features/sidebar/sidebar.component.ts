@@ -51,6 +51,17 @@ export class SidebarComponent {
     this.activeTagMenuId.set(tagId);
   }
 
+  onTagAction(actionId: string) {
+    const tagId = this.activeTagMenuId();
+    if (!tagId) return;
+
+    if (actionId === 'delete') {
+      this.tagsStore.deleteTag(tagId);
+    }
+    // other actions (edit, pin, etc.) are UI-only for now
+    this.activeTagMenuId.set(null);
+  }
+
   onTagSave(tagData: { name: string; color: string; parent: string }) {
     this.tagsStore.addTag({
       name: tagData.name,

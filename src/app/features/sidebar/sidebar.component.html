@@ -314,6 +314,6 @@
     [x]="menuPosition().x"
     [y]="menuPosition().y"
     (close)="activeTagMenuId.set(null)"
-    (action)="activeTagMenuId.set(null)">
+    (action)="onTagAction($event)">
   </app-tag-context-menu>
 }
