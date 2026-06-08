@@ -38,9 +38,16 @@ export class SidebarComponent {
   openTagMenu(tagId: string, event: MouseEvent) {
     event.preventDefault();
     event.stopPropagation();
-    
-    // Ensure the menu doesn't go off-screen (basic)
-    this.menuPosition.set({ x: event.clientX, y: event.clientY });
+
+    const menuHeight = 200; // estimated menu height in px
+    const menuWidth = 180;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    const x = Math.min(event.clientX, vw - menuWidth - 8);
+    const y = Math.min(event.clientY, vh - menuHeight - 8);
+
+    this.menuPosition.set({ x, y });
     this.activeTagMenuId.set(tagId);
   }
 
